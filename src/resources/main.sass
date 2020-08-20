@@ -1,26 +1,16 @@
+
 @font-face 
     font-family: oxygen
     src: url('./fonts/Oxygen-Light.ttf')
-
-@keyframes fadein 
-    from 
-        opacity: 0
-    to   
-        opacity: 1
-@keyframes pulse
-    0% 
-        background: black
-
-    50% 
-        background: #fff
-
-    100% 
-        background: black
+@font-face 
+    font-family: sora
+    src: url('./fonts/Sora-Regular.ttf')
 
 
 .section-block
-    background-color: rgba(0, 0, 0, 0.6)
+    background-color: $section
     border-radius: 10px
+    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8
     .section-row
         margin: 15px 0
         display: flex
@@ -62,18 +52,18 @@
     
 html, body
     height: 100%
-    font-family: oxygen
+    font-family: sora
     #root
         height: 100%
-        button
-            padding: 5px 10px
-            font-size: 16px
-            background: linear-gradient(180deg, #45A6FF 0%, #0055FB 100%), #C4C4C4
-            border-radius: 5px
-            border: none
-            cursor: pointer
-            color: #fff
-            &:focus
-                outline: none
-            &:hover
-                background: linear-gradient(0deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), linear-gradient(180deg, #45A6FF 0%, #0055FB 100%), #C4C4C4
+button
+    padding: 5px 10px
+    font-size: 16px
+    background: $accent
+    border-radius: 5px
+    border: none
+    cursor: pointer
+    color: #fff
+    &:focus
+        outline: none
+    &:hover
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), linear-gradient(180deg, #45A6FF 0%, #0055FB 100%), #C4C4C4

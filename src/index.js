@@ -12,15 +12,15 @@ import ErrorBoundry from "./components/error-boundry";
 import { ServiceProvider } from "./components/service-provider";
 import App from "./components/app";
 
-//import diviaiService from './services/diviaiService'
+import diviaiService from "./services/diviaiApi";
 import store from "./store";
 
-//const service = new diviaiService()
+const service = new diviaiService();
 
 ReactDom.render(
   <Provider store={store}>
     <ErrorBoundry>
-      <ServiceProvider value={null}>
+      <ServiceProvider value={service}>
         <Router>
           <App />
         </Router>

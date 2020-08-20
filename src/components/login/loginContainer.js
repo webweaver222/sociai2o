@@ -10,14 +10,48 @@ const LoginContainer = ({
   password,
   changeLog,
   changePass,
-  onEnter
+  onLogIn,
+  onSignUp,
+  signup = false
 }) => (
   <Login
     render={(fetching, error, valid_errors) => {
+      const btn = signup ? (
+        <button onClick={onSignUp}>{fetching ? fetching : "Sign Up"}</button>
+      ) : (
+        <button onClick={onLogIn}>{fetching ? fetching : "Log In"}</button>
+      );
+
+      const span = !signup ? (
+        <span>
+          Don't have an account yet? <a href="#">Sign Up</a>
+        </span>
+      ) : (
+        <span>
+          Already have an account? <a href="#">Log In</a>
+        </span>
+      );
+
+      const mail = signup ? (
+        <div className="log">
+          <label htmlFor="mail">Email:</label>
+          <input
+            type="text"
+            className={
+              valid_errors.hasOwnProperty("login") ? "input-error" : ""
+            }
+            id="mail"
+            value={login || ""}
+            onChange={e => changeLog(e.target.value)}
+          />
+        </div>
+      ) : null;
+
       return (
         <div className="login-body">
-          <h2>Login</h2>
+          <h2>Welcome to the SociAi</h2>
           {error}
+          {mail}
           <div className="log">
             <label htmlFor="login">Login:</label>
             <input
@@ -42,7 +76,8 @@ const LoginContainer = ({
               onChange={e => changePass(e.target.value)}
             />
           </div>
-          <button onClick={onEnter}>{fetching ? fetching : "Log In"}</button>
+          {btn}
+          {span}
         </div>
       );
     }}
@@ -58,7 +93,7 @@ const mapDispatchToProps = (dispatch, { service }) => {
   return {
     changeLog: text => dispatch({ type: "CHANGE_LOGIN_INPUT", payload: text }),
     changePass: pass => dispatch({ type: "CHANGE_PASS_INPUT", payload: pass }),
-    onEnter: () => dispatch(try_auth(service))
+    onLogIn: () => dispatch(try_auth(service))
   };
 };
 
