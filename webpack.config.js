@@ -16,7 +16,7 @@ module.exports = (env = {}) => {
   const getPlugins = () => {
     const plugins = [
       new HtmlWebpackPlugin({
-        title: "base_template",
+        title: "SociAi",
         template: "public/index.html"
       })
     ];

@@ -1,50 +1,26 @@
-.friends
-    width: 17%
-    max-height: 100%
-    margin: 20px 0
-    overflow: hidden
-   
+.friends2
+    height: 90%
+    width: 20%
+    display: flex
+    flex-direction: column
+    padding-bottom: 10px
+    margin: auto 0
+    .header
+        height: 10%
+        padding: 5px
     .list-wrapper
         position: relative
-        height: 100%
         width: 100%
-        h2
-            font-size: 16px
-            display: none
-            color: #fff
-            letter-spacing: 1px
-            font-weight: 500
-            background: $accent
-            text-align: center
-            padding: 5px 0
-        .forward,.back
-            position: absolute
-            right: 0
-            left: 0
-            margin: 0 auto
-            bottom: 0
-            transform: translateY(103%)
-            width: 100%
-            height: 23%
-            border-radius: 50%
-            background-color: rgba(0,0,0, .8)
-            z-index: 10
-            transition: .3s ease-in-out
-            cursor: pointer
-        .back
-            bottom: initial
-            top: 0
-            transform: translateY(-103%)
-        ul
-            list-style-type: none
-            padding: 0 10px
+        height: 90%
+        overflow: hidden
+        .list
             overflow: hidden
             max-height: 100%
-            li
-                margin: 8px 0
+            .list-flex-container
                 display: flex
-                justify-content: center
+                flex-direction: column
                 .pic
+                    margin: auto
                     width: 120px
                     height: 120px
                     background-size: cover
@@ -64,8 +40,7 @@
                         left: 0
                         margin: auto
                         text-align: center
-                        z-index: 6
-
+                        z-index: 9
                     .shadow
                         position: absolute
                         width: 100%
@@ -74,10 +49,39 @@
                         z-index: 5
                     &:hover 
                         opacity: .7
+        .forward, .back
+            position: absolute
+            right: 0
+            left: 0
+            margin: 0 auto
+            bottom: 0
+            transform: translateY(100%)
+            width: 120px
+            height: 120px
+            border-radius: 50%
+            background-color: rgba(0,0,0, .8)
+            z-index: 10
+            transition: .3s ease-in-out
+            cursor: pointer
+            i
+                color: rgba(255,255,255, .5)
+                position: absolute
+                margin: 50% 50%
+                transform: translate(-50%, -150%)
+                z-index: 15
+                font-size: 20px
+            &:hover
+                i
+                    color: rgba(255,255,255, .7)
+        .back
+            bottom: initial
+            top: 0
+            transform: translateY(-100%)
+            i
+                transform: translate(-50%, 50%)
+
     .hovered
         .back
             transform: translateY(-50%)  
         .forward   
-            transform: translateY(50%)         
-
-    
+            transform: translateY(50%) 
