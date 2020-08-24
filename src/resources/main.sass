@@ -53,8 +53,16 @@
 html, body
     height: 100%
     font-family: sora
+    overflow: hidden
     #root
         height: 100%
+input
+    border: none
+    background-color: $section
+    padding: 10px 15px
+    margin: 5px 0
+    &:focus
+        outline: 0
 button
     padding: 5px 10px
     font-size: 16px
@@ -66,4 +74,4 @@ button
     &:focus
         outline: none
     &:hover
-        background: linear-gradient(0deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)), linear-gradient(180deg, #45A6FF 0%, #0055FB 100%), #C4C4C4
+        background: $accentL

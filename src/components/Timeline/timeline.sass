@@ -1,0 +1,37 @@
+.timeline
+    width: 70%
+    height: 90%
+    margin: auto 0
+    .post-input
+        width: 100%
+        position: relative
+        z-index: 2
+        input
+            width: 90%
+        .send
+            position: absolute
+            right: 0
+            bottom: 0
+            transform: translate(-20%, 50%)
+            height: 50px
+            width: 50px
+            border-radius: 50%
+            background: $accent
+            z-index: 5
+            cursor: pointer
+            i
+                color: #fff
+                font-size: 16px
+                position: absolute
+                margin: 50% 50%
+                transform: translate(-56%, -50%)
+            &:hover
+                background: $accentL
+    ul
+        margin-top: 5%
+        list-style-type: none
+        height: 90%
+        overflow-y: hidden
+        li
+            padding-bottom: 20px
+            

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import Photo from "../Photo";
 import Controls from "../Controls";
-//import Timeline from "../Content";
+import Timeline from "../Timeline";
 import Friends from "../Friends";
 
 import "./Profile.sass";
@@ -17,6 +17,7 @@ const Profile = ({}) => {
         <Controls />
       </div>
       <div className="right">
+        <Timeline />
         <Friends />
       </div>
     </div>
