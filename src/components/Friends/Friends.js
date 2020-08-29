@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./friends2.sass";
 
-const Friends = props => {
+const Friends = ({ friends: { accepted } }) => {
   const list = useRef(null);
 
   const [style, setStyle] = useState("");
@@ -58,6 +58,21 @@ const Friends = props => {
     }
   };
 
+  const renderList = () => {
+    return accepted.map((friend, i) => {
+      return (
+        <div
+          className="pic"
+          key={i}
+          style={{ backgroundImage: `url(${friend.avatarUrl})` }}
+        >
+          <div className="name">{friend.username}</div>
+          <div className="shadow"></div>
+        </div>
+      );
+    });
+  };
+
   return (
     <div className={`friends2 section-block`}>
       <div className="header">
@@ -76,20 +91,7 @@ const Friends = props => {
         </div>
         <div className="list">
           <div className="list-flex-container" ref={list}>
-            <div
-              className="pic"
-              style={{ backgroundImage: "url('src/resources/img/girl2.jpg')" }}
-            >
-              <div className="shadow"></div>
-            </div>
-
-            <div
-              className="pic"
-              style={{ backgroundImage: "url('src/resources/img/girl2.jpg')" }}
-            >
-              <div className="name">pidor</div>
-              <div className="shadow"></div>
-            </div>
+            {renderList()}
           </div>
         </div>
       </div>
@@ -97,8 +99,8 @@ const Friends = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
+const mapStateToProps = ({ profile: { friends } }) => ({
+  friends
 });
 
 const mapDispatchToProps = dispatch => ({

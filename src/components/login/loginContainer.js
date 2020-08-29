@@ -1,5 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "../../utils";
+import withService from "../hoc/withService";
+import { withRouter } from "react-router-dom";
+import { signup, auth } from "../../actions";
 //import withService from "../hoc/withService";
 
 import "./login.sass";
@@ -8,11 +12,14 @@ import Login from "./login";
 const LoginContainer = ({
   login,
   password,
+  email,
   changeLog,
   changePass,
   onLogIn,
+  changeMail,
   onSignUp,
-  signup = false
+  onChangeAuthType,
+  signup
 }) => (
   <Login
     render={(fetching, error, valid_errors) => {
@@ -22,25 +29,36 @@ const LoginContainer = ({
         <button onClick={onLogIn}>{fetching ? fetching : "Log In"}</button>
       );
 
+      const onChangeType = e => {
+        e.preventDefault();
+        onChangeAuthType();
+      };
+
       const span = !signup ? (
         <span>
-          Don't have an account yet? <a href="#">Sign Up</a>
+          Don't have an account yet?{" "}
+          <a href="#" onClick={onChangeType}>
+            Sign Up
+          </a>
         </span>
       ) : (
         <span>
-          Already have an account? <a href="#">Log In</a>
+          Already have an account?{" "}
+          <a href="#" onClick={onChangeType}>
+            Log In
+          </a>
         </span>
       );
 
-      const mail = signup ? (
+      const log = signup ? (
         <div className="log">
-          <label htmlFor="mail">Email:</label>
+          <label htmlFor="login">Login:</label>
           <input
             type="text"
             className={
               valid_errors.hasOwnProperty("login") ? "input-error" : ""
             }
-            id="mail"
+            id="login"
             value={login || ""}
             onChange={e => changeLog(e.target.value)}
           />
@@ -51,19 +69,21 @@ const LoginContainer = ({
         <div className="login-body">
           <h2>Welcome to the SociAi</h2>
           {error}
-          {mail}
           <div className="log">
-            <label htmlFor="login">Login:</label>
+            <label htmlFor="mail">Email:</label>
             <input
-              type="text"
+              type="email"
+              autoComplete="on"
               className={
                 valid_errors.hasOwnProperty("login") ? "input-error" : ""
               }
-              id="login"
-              value={login || ""}
-              onChange={e => changeLog(e.target.value)}
+              id="mail"
+              value={email || ""}
+              onChange={e => changeMail(e.target.value)}
             />
           </div>
+          {log}
+
           <div className="pass">
             <label htmlFor="pass">Password:</label>
             <input
@@ -84,17 +104,26 @@ const LoginContainer = ({
   />
 );
 
-const mapStateToProps = ({ auth: { login, password } }) => ({
+const mapStateToProps = ({ auth: { login, password, signup, email } }) => ({
   login,
-  password
+  password,
+  email,
+  signup
 });
 
-const mapDispatchToProps = (dispatch, { service }) => {
+const mapDispatchToProps = (dispatch, { service, history }) => {
   return {
     changeLog: text => dispatch({ type: "CHANGE_LOGIN_INPUT", payload: text }),
     changePass: pass => dispatch({ type: "CHANGE_PASS_INPUT", payload: pass }),
-    onLogIn: () => dispatch(try_auth(service))
+    changeMail: text => dispatch({ type: "CHANGE_EMAIL_INPUT", payload: text }),
+    onLogIn: () => dispatch(auth(service)(history)),
+    onSignUp: () => dispatch(signup(service)(history)),
+    onChangeAuthType: () => dispatch("CHANGE_AUTH_TYPE")
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+export default compose(
+  withRouter,
+  withService,
+  connect(mapStateToProps, mapDispatchToProps)
+)(LoginContainer);

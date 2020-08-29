@@ -1,17 +1,33 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { compose } from "../../utils";
+
+import { withRouter } from "react-router-dom";
+import withService from "../hoc/withService";
+import useDidMountEffect from "../customHooks/didMountEffect";
+import { fetchProfile } from "../../actions";
 
 import Photo from "../Photo";
 import Controls from "../Controls";
 import Timeline from "../Timeline";
 import Friends from "../Friends";
+import UserMenu from "../UserMenu";
+import Preloader from "../preloader";
 
 import "./Profile.sass";
 
-const Profile = ({}) => {
-  return (
-    <div className="profile">
+const Profile = ({ user, fetching, onMount }) => {
+  useEffect(() => {
+    onMount();
+  }, []);
+
+  useDidMountEffect(() => {});
+
+  const content = fetching ? (
+    <Preloader height="250px" width="250px" color="lightBlue" />
+  ) : (
+    <React.Fragment>
+      <UserMenu />
       <div className="left">
         <Photo />
         <Controls />
@@ -20,24 +36,26 @@ const Profile = ({}) => {
         <Timeline />
         <Friends />
       </div>
-    </div>
+    </React.Fragment>
   );
+
+  return <div className="profile">{content}</div>;
 };
 
-Profile.propTypes = {
-  // bla: PropTypes.string,
-};
-
-Profile.defaultProps = {
-  // bla: 'test',
-};
-
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
+const mapStateToProps = ({ auth: { user }, profile: { fetching } }) => ({
+  user,
+  fetching
 });
 
-const mapDispatchToProps = dispatch => ({
-  // fnBlaBla: () => dispatch(action.name()),
+const mapDispatchToProps = (
+  dispatch,
+  { service, history, match: { params } }
+) => ({
+  onMount: () => dispatch(fetchProfile(service)(params.username)(history))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default compose(
+  withService,
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Profile);

@@ -1,20 +1,20 @@
-import React from 'react'
+import React from "react";
 
-import Loader from 'react-loader-spinner'
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-const Preloader = () => {
-    return (
-        <div className="preloader">
-            <Loader
-         type="TailSpin"
-         color="#00BFFF"
-         height={100}
-         width={100}
-         //timeout={3000} //3 secs
+const Preloader = ({ height = 20, width = 20, color = "#fff" }) => {
+  return (
+    <div className="preloader">
+      <Loader
+        type="TailSpin"
+        color={color}
+        height={height}
+        width={width}
+        //timeout={3000} //3 secs
       />
-        </div>
-    )
-}
+    </div>
+  );
+};
 
-export default Preloader
+export default Preloader;

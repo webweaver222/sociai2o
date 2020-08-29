@@ -1,0 +1,30 @@
+.user-menu
+    position: absolute
+    z-index: 20
+    right: 15px
+    top: 10px
+    border-radius: 50%
+    width: 35px
+    height: 35px
+    background-size: cover
+    background-color: lightGrey
+    cursor: pointer
+    transition: .5s ease
+    &:hover
+        background-color: lighten(lightGrey, 7%)
+    .dropdown
+        position: absolute
+        font-size: 13px
+        z-index: 20
+        transform: translate(-120%)
+        background-color: lightGrey
+        border-radius: 3px
+        border: 1px solid black
+        li
+            padding: 8px 7px 
+            border-bottom: 1px solid black
+            transition: .3s ease
+            &:hover
+               background-color: lighten(lightGrey, 7%) 
+        li:last-child
+            border-bottom: none

@@ -1,5 +1,7 @@
 const initialUpdate = {
-  session_key: undefined,
+  user: null,
+  signup: false,
+  email: "",
   login: "",
   password: "",
   component_fetching: false,
@@ -13,9 +15,19 @@ const updateAuth = (state, action) => {
     return initialUpdate;
   }
 
-  const { auth } = state;
+  const {
+    auth,
+    auth: { signup }
+  } = state;
 
   switch (action.type) {
+    case "CHANGE_EMAIL_INPUT": {
+      return {
+        ...auth,
+        email: action.payload
+      };
+    }
+
     case "CHANGE_LOGIN_INPUT": {
       return {
         ...auth,
@@ -27,6 +39,42 @@ const updateAuth = (state, action) => {
       return {
         ...auth,
         password: action.payload
+      };
+    }
+
+    case "CHANGE_AUTH_TYPE": {
+      return {
+        ...auth,
+        signup: !signup
+      };
+    }
+
+    case "AUTH_START": {
+      return {
+        ...auth,
+        login_fetching: true
+      };
+    }
+
+    case "AUTH_SUCCESS": {
+      return {
+        ...auth,
+        user: action.payload
+      };
+    }
+
+    case "AUTH_FAIL": {
+      return {
+        ...auth,
+        auth_error: action.payload,
+        login_fetching: false
+      };
+    }
+
+    case "LOAD_USER": {
+      return {
+        ...auth,
+        user: action.payload
       };
     }
 
