@@ -1,8 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "../../utils";
 import "./UserMenu.sass";
 
-const UserMenu = ({ user, dropdown, onIconClick }) => {
+import withService from "../hoc/withService";
+import { withRouter } from "react-router-dom";
+import { logout } from "../../actions";
+
+const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
   const pic = user.avatarUrl
     ? user.avatarUrl
     : "../../src/resources/img/qm.png";
@@ -24,9 +29,9 @@ const UserMenu = ({ user, dropdown, onIconClick }) => {
         //onClick={e => e.stopPropagation()}
       >
         <ul>
-          <li>My page</li>
+          <li onClick={() => onHomePage(user.username)}>My page</li>
           <li>Profile Settings</li>
-          <li>Logout</li>
+          <li onClick={onLogout}>Logout</li>
         </ul>
       </div>
     </div>
@@ -38,8 +43,14 @@ const mapStateToProps = ({ auth: { user }, profile: { dropdown } }) => ({
   dropdown
 });
 
-const mapDispatchToProps = dispatch => ({
-  onIconClick: () => dispatch("SHOW_DROPDOWN")
+const mapDispatchToProps = (dispatch, { service, history }) => ({
+  onIconClick: () => dispatch("SHOW_DROPDOWN"),
+  onLogout: () => dispatch(logout(service)),
+  onHomePage: username => history.push(`/profile/${username}`)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);
+export default compose(
+  withRouter,
+  withService,
+  connect(mapStateToProps, mapDispatchToProps)
+)(UserMenu);

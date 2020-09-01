@@ -1,6 +1,7 @@
 .post
     display: flex
     padding-right: 30px
+    position: relative
     .avatar
         padding: 10px
         .pic
@@ -13,7 +14,7 @@
             cursor: pointer
     .post-body
         padding: 10px
-        position: relative
+        //position: relative
         span
             font-weight: bold
             cursor: pointer
@@ -27,9 +28,8 @@
             font-size: 14px
         .post-buttons
             position: absolute
-            right: 0
+            right: 10px
             bottom: 0
-            transform: translateX(50%)
             i
                 cursor: pointer
                 color: $mainColor

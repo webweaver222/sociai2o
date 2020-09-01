@@ -59,7 +59,8 @@ const updateAuth = (state, action) => {
     case "AUTH_SUCCESS": {
       return {
         ...auth,
-        user: action.payload
+        user: action.payload,
+        login_fetching: false
       };
     }
 
@@ -68,6 +69,13 @@ const updateAuth = (state, action) => {
         ...auth,
         auth_error: action.payload,
         login_fetching: false
+      };
+    }
+
+    case "LOGOUT": {
+      return {
+        ...auth,
+        user: null
       };
     }
 

@@ -1,9 +1,16 @@
 export default class DiviaiService {
   _base = "http://localhost:3000";
 
-  getIndex = async () => {
+  getIndex = async token => {
+    const myHeaders = new Headers();
+
+    myHeaders.append("Accept", "application/json, text/plain, */*");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("token", token);
+
     const res = await fetch(this._base + "/", {
-      credentials: "include"
+      credentials: "include",
+      headers: myHeaders
     });
     return res;
   };
@@ -24,14 +31,20 @@ export default class DiviaiService {
     return res;
   };
 
-  postResource = async (body, url) => {
+  postResource = async (body, url, token) => {
+    const myHeaders = new Headers();
+
+    myHeaders.append("Accept", "application/json, text/plain, */*");
+    myHeaders.append("Content-Type", "application/json");
+
+    if (token) {
+      myHeaders.append("token", token);
+    }
+
     const res = await fetch(this._base + url, {
       method: "post",
       credentials: "include",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
+      headers: myHeaders,
       body: JSON.stringify(body)
     });
 

@@ -1,59 +1,16 @@
 import React, { useRef } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./timeline.sass";
 
 import PostInput from "../PostInput";
 import Post from "../Post";
 
-const Timeline = props => {
+const Timeline = ({ posts, user, data }) => {
   const listRef = useRef(null);
-
-  const list = [
-    {
-      body:
-        "Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem",
-      user: {
-        name: "bobby",
-        avatarUrl: "src/resources/img/pepsi.jpg"
-      },
-      parent: {
-        body:
-          "LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  ",
-        user: {
-          name: "marselas",
-          avatarUrl: "src/resources/img/girl2.jpg"
-        }
-      }
-    },
-    {
-      body:
-        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-      user: {
-        name: "lary",
-        avatarUrl: "src/resources/img/girl3.png"
-      }
-    },
-    {
-      body:
-        "Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem",
-      user: {
-        name: "bobby",
-        avatarUrl: "src/resources/img/pepsi.jpg"
-      },
-      parent: {
-        body:
-          "LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  LoremRbas  ",
-        user: {
-          name: "marselas",
-          avatarUrl: "src/resources/img/girl2.jpg"
-        }
-      }
-    }
-  ];
+  console.log(posts);
 
   const renderList = () => {
-    return list.map((post, i) => {
+    return posts.map((post, i) => {
       return (
         <li key={i}>
           <Post post={post} />
@@ -64,7 +21,7 @@ const Timeline = props => {
 
   return (
     <div className="timeline ">
-      <PostInput />
+      {user.username === data.username ? <PostInput /> : null}
 
       <ul
         className="posts-list section-block"
@@ -77,8 +34,10 @@ const Timeline = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
+const mapStateToProps = ({ profile: { posts, data }, auth: { user } }) => ({
+  posts,
+  data,
+  user
 });
 
 const mapDispatchToProps = dispatch => ({

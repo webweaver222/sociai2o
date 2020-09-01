@@ -1,3 +1,5 @@
+import { updatePosts } from "./funcs";
+
 const initialProfile = {
   data: {},
   relations: {},
@@ -16,9 +18,21 @@ const initialProfile = {
 const updateProfile = (state, action) => {
   if (typeof state === "undefined") return initialProfile;
 
-  const { profile } = state;
+  const { profile, auth } = state;
 
   switch (action.type) {
+    case "POST_SUCCESS": {
+      const newPost = {
+        ...action.payload,
+        user: auth.user
+      };
+
+      return {
+        ...profile,
+        posts: updatePosts(profile.posts, newPost)
+      };
+    }
+
     case "SHOW_DROPDOWN": {
       return {
         ...profile,
@@ -58,6 +72,13 @@ const updateProfile = (state, action) => {
           pending: action.payload.friends.pending
         },
         posts: action.payload.posts
+      };
+    }
+
+    case "LOGOUT": {
+      return {
+        ...profile,
+        fetching: true
       };
     }
 

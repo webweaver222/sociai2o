@@ -5,6 +5,7 @@ import withService from "../hoc/withService";
 import { Route, Switch, withRouter } from "react-router-dom";
 import useDidMountEffect from "../customHooks/didMountEffect";
 import { tryLogin } from "../../actions";
+import { socket } from "../../actions/socket";
 
 import "./app.sass";
 import bgc from "../../resources/svg/background.html";
@@ -12,9 +13,10 @@ import bgc from "../../resources/svg/background.html";
 import Login from "../login";
 import Profile from "../Profile";
 
-const App = ({ onMount, user, history, onBodyClick }) => {
+const App = ({ onMount, onCreateSocket, user, history, onBodyClick }) => {
   useEffect(() => {
     onMount();
+    onCreateSocket();
   }, []);
 
   useDidMountEffect(() => {
@@ -44,6 +46,7 @@ export default compose(
     (dispatch, { service, history }) => {
       return {
         onMount: () => dispatch(tryLogin(service)(history)),
+        onCreateSocket: () => dispatch(socket(service)(history)),
         onBodyClick: () => dispatch("HIDE_DROPDOWN")
       };
     }

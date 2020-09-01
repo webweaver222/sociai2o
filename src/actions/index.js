@@ -1,12 +1,11 @@
-const tryLogin = service => history => (dispatch, getState) => {
-  if (localStorage.getItem("sociaiUser")) {
-    return dispatch({
-      type: "LOAD_USER",
-      payload: JSON.parse(localStorage.getItem("sociaiUser"))
-    });
+const tryLogin = service => history => async (dispatch, getState) => {
+  const user = JSON.parse(localStorage.getItem("sociaiUser"));
+
+  if (!user) {
+    return history.push("/login");
   }
 
-  return history.push("/login");
+  return dispatch({ type: "LOAD_USER", payload: user });
 };
 
 const auth = service => history => async (dispatch, getState) => {
@@ -31,7 +30,7 @@ const auth = service => history => async (dispatch, getState) => {
     localStorage.setItem("sociaiUser", JSON.stringify(user));
     dispatch({ type: "AUTH_SUCCESS", payload: user });
 
-    return history.push("/");
+    return history.push(`/profile/${user.username}`);
   } catch (e) {
     return dispatch({
       type: "AUTH_FAIL",
@@ -40,6 +39,7 @@ const auth = service => history => async (dispatch, getState) => {
   }
 };
 
+/*need update and refactor*/
 const signup = service => history => async (dispatch, getState) => {
   const {
     auth: { email, login, password }
@@ -73,7 +73,6 @@ const signup = service => history => async (dispatch, getState) => {
 
 const fetchProfile = service => username => history => async dispatch => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
-
   try {
     const res = await service.getResource(`/profile/${username}`, token);
 
@@ -88,8 +87,6 @@ const fetchProfile = service => username => history => async dispatch => {
 
     if (!res.ok) {
     }
-
-    console.log(friendsList);
 
     return dispatch({
       type: "PROFILE_FETCH_SUCCESS",
@@ -109,4 +106,54 @@ const fetchProfile = service => username => history => async dispatch => {
   }
 };
 
-export { tryLogin, auth, signup, fetchProfile };
+const postMessage = service => async (dispatch, getState) => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  const {
+    profile: { postInput: post }
+  } = getState();
+
+  try {
+    const res = await service.postResource({ post }, "/post", token);
+
+    return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+  } catch (e) {}
+};
+
+const deletePost = service => id => async (dispatch, getState) => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  const {
+    profile: { postInput: post }
+  } = getState();
+
+  try {
+    const res = await service.postResource(
+      { post_id: id },
+      "/post/delete",
+      token
+    );
+  } catch (e) {}
+};
+
+const logout = service => async dispatch => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  try {
+    const res = await service.postResource({}, "/auth/logout", token);
+    if (res.ok) {
+      localStorage.clear("sociaiUser");
+      return dispatch("LOGOUT");
+    }
+  } catch (e) {}
+};
+
+export {
+  tryLogin,
+  auth,
+  signup,
+  fetchProfile,
+  logout,
+  postMessage,
+  deletePost
+};

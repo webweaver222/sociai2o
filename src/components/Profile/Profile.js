@@ -16,12 +16,14 @@ import Preloader from "../preloader";
 
 import "./Profile.sass";
 
-const Profile = ({ user, fetching, onMount }) => {
+const Profile = ({ user, fetching, onMount, match }) => {
   useEffect(() => {
     onMount();
   }, []);
 
-  useDidMountEffect(() => {});
+  useDidMountEffect(() => {
+    onMount();
+  }, [match.params.username]);
 
   const content = fetching ? (
     <Preloader height="250px" width="250px" color="lightBlue" />
