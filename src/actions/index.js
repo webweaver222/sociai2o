@@ -85,6 +85,7 @@ const fetchProfile = service => username => history => async dispatch => {
       isRequestSend
     } = await res.json();
 
+    console.log(isFriend);
     if (!res.ok) {
     }
 
@@ -117,6 +118,25 @@ const postMessage = service => async (dispatch, getState) => {
     const res = await service.postResource({ post }, "/post", token);
 
     return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+  } catch (e) {}
+};
+
+const postReply = service => parent_id => async (dispatch, getState) => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  const {
+    profile: { replyInput: post }
+  } = getState();
+
+  try {
+    const res = await service.postResource(
+      { post, parent_id },
+      "/post/reply",
+      token
+    );
+    console.log(res);
+
+    //return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
   } catch (e) {}
 };
 
@@ -155,5 +175,6 @@ export {
   fetchProfile,
   logout,
   postMessage,
-  deletePost
+  deletePost,
+  postReply
 };

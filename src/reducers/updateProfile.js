@@ -9,6 +9,8 @@ const initialProfile = {
   },
   posts: [],
   postInput: "",
+  replyInput: "",
+  reply: null,
   friendSearch: "",
   error: false,
   fetching: true,
@@ -66,12 +68,35 @@ const updateProfile = (state, action) => {
         ...profile,
         fetching: false,
         data: action.payload.data,
-        relations: action.relations,
+        relations: action.payload.relations,
         friends: {
           accepted: action.payload.friends.accepted,
           pending: action.payload.friends.pending
         },
         posts: action.payload.posts
+      };
+    }
+
+    case "OPEN_REPLY": {
+      return {
+        ...profile,
+        reply: action.payload,
+        replyInput: ""
+      };
+    }
+
+    case "CLOSE_REPLY": {
+      return {
+        ...profile,
+        reply: null,
+        replyInput: ""
+      };
+    }
+
+    case "CHANGE_REPLY_INPUT": {
+      return {
+        ...profile,
+        replyInput: action.payload
       };
     }
 

@@ -3,23 +3,49 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./Controls.sass";
 
-const Controls = props => {
-  const add = <button>Add Friend</button>;
-  const accept = <button>Accept</button>;
-  const decline = <button>Decline</button>;
-  const deleteF = <button>Delete</button>;
+const Controls = ({
+  relations,
+  data,
+  user,
+  onRemoveFriend,
+  onAddFriend,
+  onAcceptFriend
+}) => {
+  let span;
+  let pannel;
 
-  const span = <span>You have a friend request from Alex</span>;
-
-  return (
-    <div className="controls">
-      {span}
+  if (data.username === user.username) controls = null;
+  else if (relations.isRequestSend)
+    span = <span>You have send request to {data.username}</span>;
+  else if (relations.isRequestPending) {
+    span = <span>You have friend request pending form {data.username}</span>;
+    pannel = (
       <div className="pannel">
-        {accept}
-        {decline}
+        <button onClick={onAcceptFriend}>Accept</button>
       </div>
-    </div>
+    );
+  } else if (relations.isFriend) {
+    span = <span>{data.username} is your friend</span>;
+    pannel = (
+      <div className="pannel">
+        <button onClick={onRemoveFriend}>Remove</button>
+      </div>
+    );
+  } else
+    pannel = (
+      <div className="pannel">
+        <button onClick={onAddFriend}>Add Friend</button>
+      </div>
+    );
+
+  let controls = (
+    <React.Fragment>
+      {span}
+      {pannel}
+    </React.Fragment>
   );
+
+  return <div className="controls">{controls}</div>;
 };
 
 Controls.propTypes = {
@@ -30,8 +56,10 @@ Controls.defaultProps = {
   // bla: 'test',
 };
 
-const mapStateToProps = state => ({
-  // blabla: state.blabla,
+const mapStateToProps = ({ profile: { relations, data }, auth: { user } }) => ({
+  relations,
+  data,
+  user
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -21,7 +21,11 @@ const App = ({ onMount, onCreateSocket, user, history, onBodyClick }) => {
 
   useDidMountEffect(() => {
     if (!user) {
-      history.push("/login");
+      return history.push("/login");
+    }
+
+    if (history.location.pathname === "/") {
+      return history.push(`/profile/${user.username}`);
     }
   }, [user]);
 
