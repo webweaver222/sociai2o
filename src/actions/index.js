@@ -117,7 +117,9 @@ const postMessage = service => async (dispatch, getState) => {
   try {
     const res = await service.postResource({ post }, "/post", token);
 
-    return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+    if (res.ok) {
+      return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+    }
   } catch (e) {}
 };
 
@@ -134,10 +136,13 @@ const postReply = service => parent_id => async (dispatch, getState) => {
       "/post/reply",
       token
     );
-    console.log(res);
 
-    //return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
-  } catch (e) {}
+    if (res.ok) {
+      return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const deletePost = service => id => async (dispatch, getState) => {
@@ -168,6 +173,58 @@ const logout = service => async dispatch => {
   } catch (e) {}
 };
 
+const addFriend = service => friend_id => async dispatch => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  try {
+    const res = await service.postResource(
+      { friend_id },
+      "/friends/add",
+      token
+    );
+
+    if (res.ok) {
+      return dispatch("FRIEND_ADD_SUCCESS");
+    }
+  } catch (e) {
+    console.log("Error", e);
+  }
+};
+
+const acceptFriend = service => friend_id => async dispatch => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  try {
+    const res = await service.postResource(
+      { friend_id },
+      "/friends/accept",
+      token
+    );
+
+    if (res.ok) {
+      return dispatch("FRIEND_ACCEPT_SUCCESS");
+    }
+  } catch (e) {}
+};
+
+const removeFriend = service => friend_id => async dispatch => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  try {
+    const res = await service.postResource(
+      { friend_id },
+      "/friends/remove",
+      token
+    );
+
+    if (res.ok) {
+      return dispatch("FRIEND_REMOVE_SUCCESS");
+    }
+  } catch (e) {
+    console.log("Error", e);
+  }
+};
+
 export {
   tryLogin,
   auth,
@@ -176,5 +233,8 @@ export {
   logout,
   postMessage,
   deletePost,
-  postReply
+  postReply,
+  addFriend,
+  acceptFriend,
+  removeFriend
 };

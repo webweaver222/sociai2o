@@ -107,6 +107,37 @@ const updateProfile = (state, action) => {
       };
     }
 
+    case "FRIEND_REMOVE_SUCCESS": {
+      return {
+        ...profile,
+        relations: {
+          ...profile.relations,
+          isFriend: false
+        }
+      };
+    }
+
+    case "FRIEND_ADD_SUCCESS": {
+      return {
+        ...profile,
+        relations: {
+          ...profile.relations,
+          isRequestSend: true
+        }
+      };
+    }
+
+    case "FRIEND_ACCEPT_SUCCESS": {
+      return {
+        ...profile,
+        relations: {
+          ...profile.relations,
+          isRequestPending: false,
+          isFriend: true
+        }
+      };
+    }
+
     default:
       return profile;
   }
