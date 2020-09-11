@@ -85,7 +85,7 @@ const fetchProfile = service => username => history => async dispatch => {
       isRequestSend
     } = await res.json();
 
-    console.log(isFriend);
+    console.log(posts);
     if (!res.ok) {
     }
 

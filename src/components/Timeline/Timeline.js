@@ -7,15 +7,14 @@ import Post from "../Post";
 
 const Timeline = ({ posts, user, data }) => {
   const listRef = useRef(null);
-  console.log(posts);
 
   const renderList = () => {
     return posts.map((post, i) => {
-      return (
+      return !post.parent ? (
         <li key={i}>
           <Post post={post} />
         </li>
-      );
+      ) : null;
     });
   };
 

@@ -20,17 +20,29 @@ const Post = ({
   onPostReply,
   history
 }) => {
-  const parent = post.parent ? (
-    <div className="parent-wrapper">
-      <Post post={post.parent} isParent={true} history={history} />
-    </div>
-  ) : null;
+  const renderReplies = () => {
+    {
+      return post.rep.map(r => {
+        console.log(post);
+        return (
+          <li key={r._id}>
+            <Post post={r} history={history} />
+          </li>
+        );
+      });
+    }
+  };
+
+  const replySection =
+    post.rep && post.rep.length > 0 ? (
+      <ul className="replySection">{renderReplies()}</ul>
+    ) : null;
 
   const onFriendClick = username => {
     history.push(`/profile/${username}`);
   };
 
-  const controls = (
+  /*const controls = (
     <div className="post-buttons">
       {isParent ? null : user.username === post.user.username ? (
         <React.Fragment>
@@ -49,9 +61,9 @@ const Post = ({
         ></i>
       )}
     </div>
-  );
+  );*/
 
-  const replyForm =
+  /*const replyForm =
     reply === post._id ? (
       <div className="replyForm">
         <input
@@ -60,26 +72,26 @@ const Post = ({
           onChange={e => onChangeReplyInput(e.target.value)}
         />
       </div>
-    ) : null;
+    ) : null;*/
 
   return (
     <div className="post">
-      <div className="avatar">
-        <div
-          className="pic"
-          onClick={() => onFriendClick(post.user.username)}
-          style={{ backgroundImage: `url(${post.user.avatarUrl})` }}
-        ></div>
+      <div className="top">
+        <div className="avatar">
+          <div
+            className="pic"
+            onClick={() => onFriendClick(post.user.username)}
+            style={{ backgroundImage: `url(${post.user.avatarUrl})` }}
+          ></div>
+        </div>
+        <div className="post-body">
+          <span onClick={() => onFriendClick(post.user.username)}>
+            {post.user.username}
+          </span>
+          <p>{post.body}</p>
+        </div>
       </div>
-      <div className="post-body">
-        <span onClick={() => onFriendClick(post.user.username)}>
-          {post.user.username}
-        </span>
-        <p>{post.body}</p>
-        {replyForm}
-        {parent}
-        {controls}
-      </div>
+      <div className="bot">{replySection}</div>
     </div>
   );
 };
