@@ -3,16 +3,16 @@ import { connect } from "react-redux";
 import "./timeline.sass";
 
 import PostInput from "../PostInput";
-import Post from "../Post";
+import ConnectedPost from "../hoc/connectedPost";
 
 const Timeline = ({ posts, user, data }) => {
   const listRef = useRef(null);
-
+  console.log(posts);
   const renderList = () => {
     return posts.map((post, i) => {
       return !post.parent ? (
         <li key={i}>
-          <Post post={post} />
+          <ConnectedPost post={post} />
         </li>
       ) : null;
     });

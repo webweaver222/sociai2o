@@ -20,9 +20,43 @@ const initialProfile = {
 const updateProfile = (state, action) => {
   if (typeof state === "undefined") return initialProfile;
 
-  const { profile, auth } = state;
+  const {
+    profile,
+    profile: { posts },
+    auth
+  } = state;
 
   switch (action.type) {
+    case "POST_DELETE_SUCCESS": {
+      const idx = posts.findIndex(post => post._id === action.payload);
+
+      if (profile.posts[idx].parent) {
+        const parentIdx = posts.findIndex(
+          post => post._id === profile.posts[idx].parent
+        );
+        const replyIdx = posts[parentIdx].rep.findIndex(
+          rep => rep._id === action.payload
+        );
+
+        return {
+          ...profile,
+          posts: updatePosts(
+            posts,
+            {
+              ...posts[parentIdx],
+              rep: updatePosts(posts[parentIdx].rep, "remove", replyIdx)
+            },
+            parentIdx
+          )
+        };
+      }
+
+      return {
+        ...profile,
+        posts: updatePosts(posts, "remove", idx)
+      };
+    }
+
     case "POST_SUCCESS": {
       const newPost = {
         ...action.payload,
@@ -31,7 +65,8 @@ const updateProfile = (state, action) => {
 
       return {
         ...profile,
-        posts: updatePosts(profile.posts, newPost)
+        postInput: "",
+        posts: updatePosts(posts, newPost)
       };
     }
 

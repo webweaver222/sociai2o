@@ -145,12 +145,8 @@ const postReply = service => parent_id => async (dispatch, getState) => {
   }
 };
 
-const deletePost = service => id => async (dispatch, getState) => {
+const deletePost = service => id => async dispatch => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
-
-  const {
-    profile: { postInput: post }
-  } = getState();
 
   try {
     const res = await service.postResource(
@@ -158,6 +154,8 @@ const deletePost = service => id => async (dispatch, getState) => {
       "/post/delete",
       token
     );
+
+    return dispatch({ type: "POST_DELETE_SUCCESS", payload: id });
   } catch (e) {}
 };
 

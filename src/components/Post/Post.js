@@ -1,15 +1,9 @@
-import React, { use } from "react";
-import { compose } from "../../utils";
-import { connect } from "react-redux";
-import withService from "../hoc/withService";
-import { withRouter } from "react-router-dom";
-
-import { deletePost, postReply } from "../../actions";
+import React from "react";
+import ConnectedPost from "../hoc/connectedPost";
 import "./Post.sass";
 
 const Post = ({
   post,
-  isParent = false,
   deletePost,
   user,
   reply,
@@ -18,20 +12,27 @@ const Post = ({
   onReplyFormClose,
   onChangeReplyInput,
   onPostReply,
+  onTogleReplySection,
   history
 }) => {
   const renderReplies = () => {
     {
       return post.rep.map(r => {
-        console.log(post);
         return (
           <li key={r._id}>
-            <Post post={r} history={history} />
+            <ConnectedPost post={r} />
           </li>
         );
       });
     }
   };
+
+  const replySectionTogle =
+    post.rep && post.rep.length > 0 ? (
+      <div className="toggle" onClick={() => onTogleReplySection(post._id)}>
+        Show all ({post.rep.length})
+      </div>
+    ) : null;
 
   const replySection =
     post.rep && post.rep.length > 0 ? (
@@ -42,9 +43,9 @@ const Post = ({
     history.push(`/profile/${username}`);
   };
 
-  /*const controls = (
+  const controls = (
     <div className="post-buttons">
-      {isParent ? null : user.username === post.user.username ? (
+      {post.user.username === user.username ? (
         <React.Fragment>
           <i className="fa fa-pencil"></i>
           <i className="fa fa-trash" onClick={() => deletePost(post._id)}></i>
@@ -54,16 +55,16 @@ const Post = ({
           <i className="fa fa-check" onClick={() => onPostReply(post._id)}></i>
           <i className="fa fa-times" onClick={onReplyFormClose}></i>
         </React.Fragment>
-      ) : (
+      ) : !post.parent ? (
         <i
           className="fa fa-reply"
           onClick={() => onReplyFormOpen(post._id)}
         ></i>
-      )}
+      ) : null}
     </div>
-  );*/
+  );
 
-  /*const replyForm =
+  const replyForm =
     reply === post._id ? (
       <div className="replyForm">
         <input
@@ -72,7 +73,7 @@ const Post = ({
           onChange={e => onChangeReplyInput(e.target.value)}
         />
       </div>
-    ) : null;*/
+    ) : null;
 
   return (
     <div className="post">
@@ -89,33 +90,13 @@ const Post = ({
             {post.user.username}
           </span>
           <p>{post.body}</p>
+          {replyForm}
         </div>
+        {controls}
       </div>
       <div className="bot">{replySection}</div>
     </div>
   );
 };
 
-const mapStateToProps = ({
-  auth: { user },
-  profile: { reply, replyInput }
-}) => ({
-  user,
-  reply,
-  replyInput
-});
-
-const mapDispatchToProps = (dispatch, { service }) => ({
-  deletePost: id => dispatch(deletePost(service)(id)),
-  onReplyFormOpen: id => dispatch({ type: "OPEN_REPLY", payload: id }),
-  onReplyFormClose: () => dispatch("CLOSE_REPLY"),
-  onChangeReplyInput: text =>
-    dispatch({ type: "CHANGE_REPLY_INPUT", payload: text }),
-  onPostReply: id => dispatch(postReply(service)(id))
-});
-
-export default compose(
-  withRouter,
-  withService,
-  connect(mapStateToProps, mapDispatchToProps)
-)(Post);
+export default Post;
