@@ -28,14 +28,13 @@ const updateProfile = (state, action) => {
 
   switch (action.type) {
     case "POST_DELETE_SUCCESS": {
-      const idx = posts.findIndex(post => post._id === action.payload);
-
-      if (profile.posts[idx].parent) {
+      if (action.payload.parent) {
         const parentIdx = posts.findIndex(
-          post => post._id === profile.posts[idx].parent
+          post => post._id === action.payload.parent
         );
-        const replyIdx = posts[parentIdx].rep.findIndex(
-          rep => rep._id === action.payload
+
+        const deleteIdx = posts[parentIdx].rep.findIndex(
+          post => post._id === action.payload._id
         );
 
         return {
@@ -44,12 +43,14 @@ const updateProfile = (state, action) => {
             posts,
             {
               ...posts[parentIdx],
-              rep: updatePosts(posts[parentIdx].rep, "remove", replyIdx)
+              rep: updatePosts(posts[parentIdx].rep, "remove", deleteIdx)
             },
             parentIdx
           )
         };
       }
+
+      const idx = posts.findIndex(post => post._id === action.payload._id);
 
       return {
         ...profile,
@@ -62,6 +63,26 @@ const updateProfile = (state, action) => {
         ...action.payload,
         user: auth.user
       };
+
+      if (action.payload.parent) {
+        const parent_idx = posts.findIndex(
+          post => post._id === action.payload.parent._id
+        );
+
+        return {
+          ...profile,
+          replyInput: "",
+          reply: null,
+          posts: updatePosts(
+            posts,
+            {
+              ...posts[parent_idx],
+              rep: updatePosts(posts[parent_idx].rep, newPost)
+            },
+            parent_idx
+          )
+        };
+      }
 
       return {
         ...profile,

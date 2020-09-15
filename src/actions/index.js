@@ -85,7 +85,6 @@ const fetchProfile = service => username => history => async dispatch => {
       isRequestSend
     } = await res.json();
 
-    console.log(posts);
     if (!res.ok) {
     }
 
@@ -155,7 +154,9 @@ const deletePost = service => id => async dispatch => {
       token
     );
 
-    return dispatch({ type: "POST_DELETE_SUCCESS", payload: id });
+    const post = await res.json();
+
+    return dispatch({ type: "POST_DELETE_SUCCESS", payload: post });
   } catch (e) {}
 };
 
