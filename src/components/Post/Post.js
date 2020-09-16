@@ -8,10 +8,15 @@ const Post = ({
   user,
   reply,
   replyInput,
+  postEdit,
   onReplyFormOpen,
   onReplyFormClose,
   onChangeReplyInput,
   onPostReply,
+  onPostEditOpen,
+  onPostEditClose,
+  onEditPost,
+  onEditInputChange,
   onTogleReplySection,
   history
 }) => {
@@ -27,12 +32,25 @@ const Post = ({
     }
   };
 
-  const replySectionTogle =
+  /*const replySectionTogle =
     post.rep && post.rep.length > 0 ? (
       <div className="toggle" onClick={() => onTogleReplySection(post._id)}>
         Show all ({post.rep.length})
       </div>
-    ) : null;
+    ) : null;*/
+
+  const postContent =
+    post._id === postEdit ? (
+      <div className="editForm">
+        <input
+          type="text"
+          defaultValue={post.body}
+          onChange={e => onEditInputChange(e.target.value)}
+        />
+      </div>
+    ) : (
+      <p>{post.body}</p>
+    );
 
   const replySection =
     post.rep && post.rep.length > 0 ? (
@@ -45,15 +63,23 @@ const Post = ({
 
   const controls = (
     <div className="post-buttons">
-      {post.user.username === user.username ? (
+      {post.user.username === user.username && post._id !== postEdit ? (
         <React.Fragment>
-          <i className="fa fa-pencil"></i>
+          <i
+            className="fa fa-pencil"
+            onClick={() => onPostEditOpen(post._id)}
+          ></i>
           <i className="fa fa-trash" onClick={() => deletePost(post._id)}></i>
         </React.Fragment>
       ) : post._id === reply ? (
         <React.Fragment>
           <i className="fa fa-check" onClick={() => onPostReply(post._id)}></i>
           <i className="fa fa-times" onClick={onReplyFormClose}></i>
+        </React.Fragment>
+      ) : post._id === postEdit ? (
+        <React.Fragment>
+          <i className="fa fa-check" onClick={() => onEditPost(post._id)}></i>
+          <i className="fa fa-times" onClick={onPostEditClose}></i>
         </React.Fragment>
       ) : !post.parent ? (
         <i
@@ -89,7 +115,7 @@ const Post = ({
           <span onClick={() => onFriendClick(post.user.username)}>
             {post.user.username}
           </span>
-          <p>{post.body}</p>
+          {postContent}
           {replyForm}
         </div>
         {controls}

@@ -144,6 +144,28 @@ const postReply = service => parent_id => async (dispatch, getState) => {
   }
 };
 
+const editPost = service => post_id => async (dispatch, getState) => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+
+  const {
+    profile: { editInput: text }
+  } = getState();
+
+  try {
+    const res = await service.postResource(
+      { text, post_id },
+      "/post/edit",
+      token
+    );
+
+    const post = await res.json();
+
+    if (res.ok) {
+      return dispatch({ type: "EDIT_SUCCESS", payload: post });
+    }
+  } catch (e) {}
+};
+
 const deletePost = service => id => async dispatch => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
 
@@ -235,5 +257,6 @@ export {
   postReply,
   addFriend,
   acceptFriend,
-  removeFriend
+  removeFriend,
+  editPost
 };

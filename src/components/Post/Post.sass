@@ -18,7 +18,6 @@
             width: 100%
             display: flex
             flex-direction: column
-            //position: relative
             span
                 font-weight: bold
                 cursor: pointer
@@ -30,6 +29,19 @@
                 line-height: 20px
                 margin-top: 15px
                 font-size: 14px
+            .editForm
+                margin-top: 15px
+                input
+                    padding: 0
+                    margin: 0
+                    font-family: sora
+                    font-size: 14px
+                    background-color: #fff
+                    border-radius: 7px
+                    padding: 5px
+                    width: 80%
+                    animation: fadein .2s ease
+                    border: 1px solid $mainColor
             .replyForm
                 animation: fadein .5s
                 input
@@ -73,6 +85,10 @@
             margin: 0 0 0 auto
             li
                 padding-bottom: 5px
+                .editForm
+                    margin-top: 7px
+                    input
+                        padding: 4px
                 .post
                     padding-right: 10px
                     i

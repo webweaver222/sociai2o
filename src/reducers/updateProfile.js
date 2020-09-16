@@ -10,7 +10,9 @@ const initialProfile = {
   posts: [],
   postInput: "",
   replyInput: "",
+  editInput: "",
   reply: null,
+  postEdit: null,
   friendSearch: "",
   error: false,
   fetching: true,
@@ -27,6 +29,56 @@ const updateProfile = (state, action) => {
   } = state;
 
   switch (action.type) {
+    case "EDIT_SUCCESS": {
+      if (action.payload.parent) {
+        const parentIdx = posts.findIndex(
+          post => post._id === action.payload.parent
+        );
+
+        const editIdx = posts[parentIdx].rep.findIndex(
+          post => post._id === action.payload._id
+        );
+
+        return {
+          ...profile,
+          editInput: "",
+          postEdit: null,
+          posts: updatePosts(
+            posts,
+            {
+              ...posts[parentIdx],
+              rep: updatePosts(
+                posts[parentIdx].rep,
+                {
+                  ...posts[parentIdx].rep[editIdx],
+                  body: action.payload.body
+                },
+                editIdx
+              )
+            },
+            parentIdx
+          )
+        };
+      }
+
+      const idx = posts.findIndex(post => post._id === action.payload._id);
+      console.log(action.payload);
+
+      return {
+        ...profile,
+        editInput: "",
+        postEdit: null,
+        posts: updatePosts(
+          posts,
+          {
+            ...posts[idx],
+            body: action.payload.body
+          },
+          idx
+        )
+      };
+    }
+
     case "POST_DELETE_SUCCESS": {
       if (action.payload.parent) {
         const parentIdx = posts.findIndex(
@@ -112,6 +164,13 @@ const updateProfile = (state, action) => {
       };
     }
 
+    case "CHANGE_EDIT_INPUT": {
+      return {
+        ...profile,
+        editInput: action.payload
+      };
+    }
+
     case "CHANGE_FRIEND_SEARCH": {
       return {
         ...profile,
@@ -130,6 +189,20 @@ const updateProfile = (state, action) => {
           pending: action.payload.friends.pending
         },
         posts: action.payload.posts
+      };
+    }
+
+    case "OPEN_EDIT": {
+      return {
+        ...profile,
+        postEdit: action.payload
+      };
+    }
+
+    case "CLOSE_EDIT": {
+      return {
+        ...profile,
+        postEdit: null
       };
     }
 
