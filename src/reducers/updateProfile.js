@@ -99,6 +99,14 @@ const updateProfile = (state, action) => {
       };
     }
 
+    case "AVATAR_UPLOAD_SUCCESS": {
+      return {
+        ...profile,
+        popupRender: null,
+        shading: false
+      };
+    }
+
     default:
       return profile;
   }

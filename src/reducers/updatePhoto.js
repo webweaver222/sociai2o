@@ -1,8 +1,12 @@
+import { getAvatarDim } from "./funcs";
+
 const initialPhoto = {
   fileEncode: false,
   base64: null,
   width: null,
-  height: null
+  height: null,
+  avatarWidth: null,
+  avatarHeight: null
 };
 
 const updatePhoto = (state, action) => {
@@ -11,6 +15,21 @@ const updatePhoto = (state, action) => {
   const { photo } = state;
 
   switch (action.type) {
+    case "PREPARE_AVATAR_CONTAINER": {
+      const { width, height } = action.payload;
+
+      const baseWidth = 300;
+      const baseHeight = 400;
+
+      const dim = getAvatarDim(width, height, baseWidth, baseHeight);
+
+      return {
+        ...photo,
+        avatarWidth: dim.width,
+        avatarHeight: dim.height
+      };
+    }
+
     case "START_ENCODE": {
       return {
         ...photo,
@@ -26,12 +45,25 @@ const updatePhoto = (state, action) => {
       };
     }
 
-    case "SAVE_AVATAR_SIZE": {
-      const { width, height } = action.payload;
+    case "AVATAR_UPLOAD_SUCCESS": {
       return {
         ...photo,
-        width,
-        height
+        fileEncode: false
+      };
+    }
+
+    case "SAVE_AVATAR_SIZE": {
+      const { width, height } = action.payload;
+
+      const baseWidth = 400;
+      const baseHeight = 300;
+
+      const dim = getAvatarDim(width, height, baseWidth, baseHeight);
+
+      return {
+        ...photo,
+        width: dim.width,
+        height: dim.height
       };
     }
 

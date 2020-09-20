@@ -1,3 +1,26 @@
+export const getAvatarDim = (width, height, baseWidth, baseHeight) => {
+  let w = width;
+  let h = height;
+  const k = width / height;
+
+  if (k > 1) {
+    if (width > baseWidth) {
+      w = baseWidth;
+      h = baseWidth / k;
+    }
+  } else {
+    if (height > baseHeight) {
+      h = baseHeight;
+      w = baseHeight * k;
+    }
+  }
+
+  return {
+    width: w,
+    height: h
+  };
+};
+
 export const updatePosts = (list, item, idx) => {
   /*if (list === null)
     return [

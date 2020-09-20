@@ -29,7 +29,7 @@ const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
     }
   }, [user]);
 
-  const shading = false ? <div className="shading"></div> : null;
+  const shading = shd ? <div className="shading"></div> : null;
 
   return (
     <div className="app" onClick={onBodyClick}>

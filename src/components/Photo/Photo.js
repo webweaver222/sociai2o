@@ -6,7 +6,7 @@ import ProgressBar from "../minorComp/LoadingProgress";
 import { avatarEncode } from "../../actions";
 import "./Photo.sass";
 
-const Photo = ({ data, onAvatarUpl }) => {
+const Photo = ({ data, onAvatarUpl, avatarWidth, avatarHeight }) => {
   const fileInput = useRef(null);
 
   const avatarConfirm = ({
@@ -18,7 +18,7 @@ const Photo = ({ data, onAvatarUpl }) => {
     onUploadCancel
   }) => {
     const img = base64 ? (
-      <img src={base64} alt="" width={width * 0.5} height={height * 0.5} />
+      <img src={base64} alt="" width={width} height={height} />
     ) : null;
 
     const content = fileEncode ? (
@@ -43,15 +43,25 @@ const Photo = ({ data, onAvatarUpl }) => {
   return (
     <div className="photo section-block">
       <h2>{data.username}</h2>
-      <img src={data.avatarUrl} height={"90%"} width={"90%"} alt="photo" />
+      <img
+        src={data.avatarUrl}
+        height={avatarHeight}
+        width={avatarWidth}
+        alt="photo"
+      />
       <input type="file" ref={fileInput} onChange={onAvatarChange} />
       <button onClick={() => fileInput.current.click()}>Change Picture</button>
     </div>
   );
 };
 
-const mapStateToProps = ({ profile: { data } }) => ({
-  data
+const mapStateToProps = ({
+  profile: { data },
+  photo: { avatarWidth, avatarHeight }
+}) => ({
+  data,
+  avatarWidth,
+  avatarHeight
 });
 
 const mapDispatchToProps = dispatch => ({

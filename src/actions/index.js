@@ -1,3 +1,5 @@
+import { getImageSize } from "../utils";
+
 const tryLogin = service => history => async (dispatch, getState) => {
   const user = JSON.parse(localStorage.getItem("sociaiUser"));
 
@@ -86,6 +88,14 @@ const fetchProfile = service => username => history => async dispatch => {
     } = await res.json();
 
     if (!res.ok) {
+    }
+
+    if (user.avatarUrl) {
+      const size = await getImageSize(user.avatarUrl);
+
+      if (size) {
+        dispatch({ type: "PREPARE_AVATAR_CONTAINER", payload: size });
+      }
     }
 
     return dispatch({
@@ -253,23 +263,22 @@ const avatarEncode = popupFunction => file => (dispatch, getState) => {
 
     var fileReader = new FileReader();
 
-    fileReader.onload = function (fileLoadedEvent) {
+    fileReader.onload = async function (fileLoadedEvent) {
       const uri = fileLoadedEvent.target.result;
-      const i = new Image();
 
-      i.onload = function () {
+      const size = await getImageSize(uri);
+
+      if (size) {
         dispatch({
           type: "SAVE_AVATAR_SIZE",
           payload: {
-            width: i.width,
-            height: i.height
+            width: size.width,
+            height: size.height
           }
         });
+      }
 
-        dispatch({ type: "SAVE_ENCODE", payload: uri });
-      };
-
-      i.src = uri;
+      dispatch({ type: "SAVE_ENCODE", payload: uri });
     };
 
     fileReader.readAsDataURL(file);
@@ -282,13 +291,16 @@ const avatarUpload = service => async (dispatch, getState) => {
     photo: { base64 }
   } = getState();
 
+  dispatch("START_ENCODE");
+
   try {
     const res = await service.postResource(
       { base64 },
       "/profile/avatar",
       token
     );
-    console.log(res);
+
+    return dispatch("AVATAR_UPLOAD_SUCCESS");
   } catch (e) {
     console.log(e);
   }
