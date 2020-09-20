@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 
 const mapStateToProps = ({
   auth: { user },
-  profile: { reply, replyInput, editInput, postEdit }
+  timeline: { reply, replyInput, editInput, postEdit }
 }) => ({
   user,
   reply,

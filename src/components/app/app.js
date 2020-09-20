@@ -13,7 +13,7 @@ import bgc from "../../resources/svg/background.html";
 import Login from "../login";
 import Profile from "../Profile";
 
-const App = ({ onMount, onCreateSocket, user, history, onBodyClick }) => {
+const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
   useEffect(() => {
     onMount();
     onCreateSocket();
@@ -29,13 +29,15 @@ const App = ({ onMount, onCreateSocket, user, history, onBodyClick }) => {
     }
   }, [user]);
 
+  const shading = false ? <div className="shading"></div> : null;
+
   return (
     <div className="app" onClick={onBodyClick}>
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/profile/:username" component={Profile} />
       </Switch>
-
+      {shading}
       <div className="background" dangerouslySetInnerHTML={{ __html: bgc }} />
     </div>
   );
@@ -45,7 +47,7 @@ export default compose(
   withRouter,
   withService,
   connect(
-    ({ auth: { user } }) => ({ user }),
+    ({ auth: { user }, profile: { shading } }) => ({ user, shd: shading }),
 
     (dispatch, { service, history }) => {
       return {

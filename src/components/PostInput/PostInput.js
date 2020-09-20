@@ -33,7 +33,7 @@ PostInput.defaultProps = {
   // bla: 'test',
 };
 
-const mapStateToProps = ({ profile: { postInput } }) => ({
+const mapStateToProps = ({ timeline: { postInput } }) => ({
   postInput
 });
 

@@ -110,7 +110,7 @@ const postMessage = service => async (dispatch, getState) => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
 
   const {
-    profile: { postInput: post }
+    timeline: { postInput: post }
   } = getState();
 
   try {
@@ -126,7 +126,7 @@ const postReply = service => parent_id => async (dispatch, getState) => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
 
   const {
-    profile: { replyInput: post }
+    timeline: { replyInput: post }
   } = getState();
 
   try {
@@ -148,7 +148,7 @@ const editPost = service => post_id => async (dispatch, getState) => {
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
 
   const {
-    profile: { editInput: text }
+    timeline: { editInput: text }
   } = getState();
 
   try {
@@ -246,6 +246,54 @@ const removeFriend = service => friend_id => async dispatch => {
   }
 };
 
+const avatarEncode = popupFunction => file => (dispatch, getState) => {
+  if (file && /image/.test(file.type)) {
+    dispatch({ type: "SET_POPUP", payload: popupFunction });
+    dispatch("START_ENCODE");
+
+    var fileReader = new FileReader();
+
+    fileReader.onload = function (fileLoadedEvent) {
+      const uri = fileLoadedEvent.target.result;
+      const i = new Image();
+
+      i.onload = function () {
+        dispatch({
+          type: "SAVE_AVATAR_SIZE",
+          payload: {
+            width: i.width,
+            height: i.height
+          }
+        });
+
+        dispatch({ type: "SAVE_ENCODE", payload: uri });
+      };
+
+      i.src = uri;
+    };
+
+    fileReader.readAsDataURL(file);
+  } else alert("Wrong File Format!");
+};
+
+const avatarUpload = service => async (dispatch, getState) => {
+  const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
+  const {
+    photo: { base64 }
+  } = getState();
+
+  try {
+    const res = await service.postResource(
+      { base64 },
+      "/profile/avatar",
+      token
+    );
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export {
   tryLogin,
   auth,
@@ -258,5 +306,7 @@ export {
   addFriend,
   acceptFriend,
   removeFriend,
-  editPost
+  editPost,
+  avatarEncode,
+  avatarUpload
 };

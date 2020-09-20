@@ -33,7 +33,11 @@ const Timeline = ({ posts, user, data }) => {
   );
 };
 
-const mapStateToProps = ({ profile: { posts, data }, auth: { user } }) => ({
+const mapStateToProps = ({
+  profile: { data },
+  timeline: { posts },
+  auth: { user }
+}) => ({
   posts,
   data,
   user

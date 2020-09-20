@@ -1,5 +1,3 @@
-import { updatePosts } from "./funcs";
-
 const initialProfile = {
   data: {},
   relations: {},
@@ -7,12 +5,8 @@ const initialProfile = {
     accepted: [],
     pending: []
   },
-  posts: [],
-  postInput: "",
-  replyInput: "",
-  editInput: "",
-  reply: null,
-  postEdit: null,
+  popupRender: null,
+  shading: false,
   friendSearch: "",
   error: false,
   fetching: true,
@@ -22,127 +16,9 @@ const initialProfile = {
 const updateProfile = (state, action) => {
   if (typeof state === "undefined") return initialProfile;
 
-  const {
-    profile,
-    profile: { posts },
-    auth
-  } = state;
+  const { profile } = state;
 
   switch (action.type) {
-    case "EDIT_SUCCESS": {
-      if (action.payload.parent) {
-        const parentIdx = posts.findIndex(
-          post => post._id === action.payload.parent
-        );
-
-        const editIdx = posts[parentIdx].rep.findIndex(
-          post => post._id === action.payload._id
-        );
-
-        return {
-          ...profile,
-          editInput: "",
-          postEdit: null,
-          posts: updatePosts(
-            posts,
-            {
-              ...posts[parentIdx],
-              rep: updatePosts(
-                posts[parentIdx].rep,
-                {
-                  ...posts[parentIdx].rep[editIdx],
-                  body: action.payload.body
-                },
-                editIdx
-              )
-            },
-            parentIdx
-          )
-        };
-      }
-
-      const idx = posts.findIndex(post => post._id === action.payload._id);
-      console.log(action.payload);
-
-      return {
-        ...profile,
-        editInput: "",
-        postEdit: null,
-        posts: updatePosts(
-          posts,
-          {
-            ...posts[idx],
-            body: action.payload.body
-          },
-          idx
-        )
-      };
-    }
-
-    case "POST_DELETE_SUCCESS": {
-      if (action.payload.parent) {
-        const parentIdx = posts.findIndex(
-          post => post._id === action.payload.parent
-        );
-
-        const deleteIdx = posts[parentIdx].rep.findIndex(
-          post => post._id === action.payload._id
-        );
-
-        return {
-          ...profile,
-          posts: updatePosts(
-            posts,
-            {
-              ...posts[parentIdx],
-              rep: updatePosts(posts[parentIdx].rep, "remove", deleteIdx)
-            },
-            parentIdx
-          )
-        };
-      }
-
-      const idx = posts.findIndex(post => post._id === action.payload._id);
-
-      return {
-        ...profile,
-        posts: updatePosts(posts, "remove", idx)
-      };
-    }
-
-    case "POST_SUCCESS": {
-      const newPost = {
-        ...action.payload,
-        user: auth.user
-      };
-
-      if (action.payload.parent) {
-        const parent_idx = posts.findIndex(
-          post => post._id === action.payload.parent._id
-        );
-
-        return {
-          ...profile,
-          replyInput: "",
-          reply: null,
-          posts: updatePosts(
-            posts,
-            {
-              ...posts[parent_idx],
-              rep: updatePosts(posts[parent_idx].rep, newPost)
-            },
-            parent_idx
-          )
-        };
-      }
-
-      return {
-        ...profile,
-        postInput: "",
-        posts: updatePosts(posts, newPost)
-      };
-    }
-
     case "SHOW_DROPDOWN": {
       return {
         ...profile,
@@ -154,20 +30,6 @@ const updateProfile = (state, action) => {
       return {
         ...profile,
         dropdown: false
-      };
-    }
-
-    case "CHANGE_POST_INPUT": {
-      return {
-        ...profile,
-        postInput: action.payload
-      };
-    }
-
-    case "CHANGE_EDIT_INPUT": {
-      return {
-        ...profile,
-        editInput: action.payload
       };
     }
 
@@ -187,45 +49,7 @@ const updateProfile = (state, action) => {
         friends: {
           accepted: action.payload.friends.accepted,
           pending: action.payload.friends.pending
-        },
-        posts: action.payload.posts
-      };
-    }
-
-    case "OPEN_EDIT": {
-      return {
-        ...profile,
-        postEdit: action.payload
-      };
-    }
-
-    case "CLOSE_EDIT": {
-      return {
-        ...profile,
-        postEdit: null
-      };
-    }
-
-    case "OPEN_REPLY": {
-      return {
-        ...profile,
-        reply: action.payload,
-        replyInput: ""
-      };
-    }
-
-    case "CLOSE_REPLY": {
-      return {
-        ...profile,
-        reply: null,
-        replyInput: ""
-      };
-    }
-
-    case "CHANGE_REPLY_INPUT": {
-      return {
-        ...profile,
-        replyInput: action.payload
+        }
       };
     }
 
@@ -264,6 +88,14 @@ const updateProfile = (state, action) => {
           isRequestPending: false,
           isFriend: true
         }
+      };
+    }
+
+    case "SET_POPUP": {
+      return {
+        ...profile,
+        popupRender: action.payload,
+        shading: true
       };
     }
 
