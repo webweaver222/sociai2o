@@ -300,7 +300,13 @@ const avatarUpload = service => async (dispatch, getState) => {
       token
     );
 
-    return dispatch("AVATAR_UPLOAD_SUCCESS");
+    const { url, size } = await res.json();
+
+    dispatch({ type: "PREPARE_AVATAR_CONTAINER", payload: size });
+
+    dispatch({ type: "AVATAR_UPLAOD_SUCCESS", payload: url });
+
+    return dispatch("CLOSE_POPUP");
   } catch (e) {
     console.log(e);
   }

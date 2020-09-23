@@ -8,15 +8,27 @@ import "./friends2.sass";
 const Friends = ({
   friends: { accepted },
   onFriendClick,
+  onFriendSerachChange,
+  friendSearch,
   list,
   style,
   onHover,
   onBack,
   onForward,
-  setStyle
+  setStyle,
+  user,
+  data
 }) => {
+  const searchFilter = arr => {
+    return arr.filter(
+      friend =>
+        friend.username.toLowerCase().indexOf(friendSearch.toLowerCase()) > -1
+    );
+  };
+
   const renderList = () => {
-    return accepted.map((friend, i) => {
+    const filtred = searchFilter(accepted);
+    return filtred.map((friend, i) => {
       return (
         <div
           className="pic"
@@ -31,10 +43,25 @@ const Friends = ({
     });
   };
 
+  const header =
+    user.username === data.username ? (
+      <h2>Your Friends: </h2>
+    ) : (
+      <h2>{data.username}'s Friends:</h2>
+    );
+
   return (
     <div className={`friends2 section-block`}>
-      <div className="header">
-        <h2>Alex's Friends: </h2>
+      <div className="header">{header}</div>
+      <div className="search">
+        <div className="inputWrap">
+          <input
+            type="text"
+            value={friendSearch}
+            onChange={e => onFriendSerachChange(e.target.value)}
+          />
+          <i className="fa fa-search" />
+        </div>
       </div>
       <div
         className={`list-wrapper ${style}`}
@@ -57,12 +84,20 @@ const Friends = ({
   );
 };
 
-const mapStateToProps = ({ profile: { friends } }) => ({
-  friends
+const mapStateToProps = ({
+  profile: { friends, data, friendSearch },
+  auth: { user }
+}) => ({
+  friends,
+  data,
+  user,
+  friendSearch
 });
 
 const mapDispatchToProps = (dispatch, { history }) => ({
-  onFriendClick: username => history.push(`/profile/${username}`)
+  onFriendClick: username => history.push(`/profile/${username}`),
+  onFriendSerachChange: text =>
+    dispatch({ type: "FRIEND_SEARCH_CHANGE", payload: text })
 });
 
 export default compose(

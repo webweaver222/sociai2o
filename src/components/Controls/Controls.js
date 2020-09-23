@@ -17,7 +17,6 @@ const Controls = ({
   let span;
   let pannel;
 
-  console.log(data);
   if (data.username === user.username) controls = null;
   else if (relations.isRequestSend)
     span = <span>You have send request to {data.username}</span>;

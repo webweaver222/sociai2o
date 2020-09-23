@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
 
-import pic from "../../resources/img/girl3.png";
+import pic from "../../resources/img/qm.png";
 import ProgressBar from "../minorComp/LoadingProgress";
 import { avatarEncode } from "../../actions";
 import "./Photo.sass";
 
-const Photo = ({ data, onAvatarUpl, avatarWidth, avatarHeight }) => {
+const Photo = ({ data, user, onAvatarUpl, avatarWidth, avatarHeight }) => {
   const fileInput = useRef(null);
-
+  console.log(avatarWidth);
   const avatarConfirm = ({
     fileEncode,
     base64,
@@ -41,25 +41,34 @@ const Photo = ({ data, onAvatarUpl, avatarWidth, avatarHeight }) => {
   };
 
   return (
-    <div className="photo section-block">
+    <div
+      className="photo section-block"
+      //style={{ width: avatarWidth, height: avatarHeight }}
+    >
       <h2>{data.username}</h2>
       <img
-        src={data.avatarUrl}
-        height={avatarHeight}
-        width={avatarWidth}
+        src={data.avatarUrl || pic}
+        height={avatarHeight || 250}
+        width={avatarWidth || 250}
         alt="photo"
       />
       <input type="file" ref={fileInput} onChange={onAvatarChange} />
-      <button onClick={() => fileInput.current.click()}>Change Picture</button>
+      {user.username === data.username ? (
+        <button onClick={() => fileInput.current.click()}>
+          Change Picture
+        </button>
+      ) : null}
     </div>
   );
 };
 
 const mapStateToProps = ({
+  auth: { user },
   profile: { data },
   photo: { avatarWidth, avatarHeight }
 }) => ({
   data,
+  user,
   avatarWidth,
   avatarHeight
 });

@@ -45,7 +45,7 @@ const updatePhoto = (state, action) => {
       };
     }
 
-    case "AVATAR_UPLOAD_SUCCESS": {
+    case "CLOSE_POPUP": {
       return {
         ...photo,
         fileEncode: false

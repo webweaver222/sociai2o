@@ -17,7 +17,8 @@ const mapStateToProps = ({ photo: { fileEncode, base64, width, height } }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { service }) => ({
-  onUploadConfirm: () => dispatch(avatarUpload(service))
+  onUploadConfirm: () => dispatch(avatarUpload(service)),
+  onUploadCancel: () => dispatch("CLOSE_POPUP")
 });
 
 export default compose(

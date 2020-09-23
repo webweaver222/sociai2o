@@ -21,6 +21,16 @@ const updateAuth = (state, action) => {
   } = state;
 
   switch (action.type) {
+    case "AVATAR_UPLAOD_SUCCESS": {
+      return {
+        ...auth,
+        user: {
+          ...auth.user,
+          avatarUrl: action.payload
+        }
+      };
+    }
+
     case "CHANGE_EMAIL_INPUT": {
       return {
         ...auth,

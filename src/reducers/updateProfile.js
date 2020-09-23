@@ -19,6 +19,16 @@ const updateProfile = (state, action) => {
   const { profile } = state;
 
   switch (action.type) {
+    case "AVATAR_UPLAOD_SUCCESS": {
+      return {
+        ...profile,
+        data: {
+          ...profile.data,
+          avatarUrl: action.payload
+        }
+      };
+    }
+
     case "SHOW_DROPDOWN": {
       return {
         ...profile,
@@ -91,6 +101,13 @@ const updateProfile = (state, action) => {
       };
     }
 
+    case "FRIEND_SEARCH_CHANGE": {
+      return {
+        ...profile,
+        friendSearch: action.payload
+      };
+    }
+
     case "SET_POPUP": {
       return {
         ...profile,
@@ -99,7 +116,7 @@ const updateProfile = (state, action) => {
       };
     }
 
-    case "AVATAR_UPLOAD_SUCCESS": {
+    case "CLOSE_POPUP": {
       return {
         ...profile,
         popupRender: null,
