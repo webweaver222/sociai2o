@@ -3,6 +3,7 @@ import { compose } from "../../utils";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import withFriendsMouseEvents from "../hoc/withFriendsMouseEvents";
+import qm from "../../resources/img/qm.png";
 import "./friends2.sass";
 
 const Friends = ({
@@ -34,8 +35,12 @@ const Friends = ({
           className="pic"
           onClick={() => onFriendClick(friend.username)}
           key={i}
-          style={{ backgroundImage: `url(${friend.avatarUrl})` }}
         >
+          <img
+            src={friend.avatarUrl}
+            alt="img fetch error"
+            onError={e => (e.target.src = qm)}
+          />
           <div className="name">{friend.username}</div>
           <div className="shadow"></div>
         </div>

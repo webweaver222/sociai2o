@@ -19,6 +19,8 @@ const updateProfile = (state, action) => {
   const { profile } = state;
 
   switch (action.type) {
+  
+
     case "AVATAR_UPLAOD_SUCCESS": {
       return {
         ...profile,

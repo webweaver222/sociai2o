@@ -5,11 +5,11 @@ export const socket = service => history => async (dispatch, getState) => {
     auth: { user }
   } = getState();
 
-  //const socket = io("http://localhost:3000");
+  const socket = io("http://localhost:3000");
 
-  //socket.emit("join", { username: user.username });
+  socket.emit("join", { username: user.username });
 
-  /*socket.on("test", function (msg) {
+  socket.on("test", function (msg) {
     console.log(msg);
-  });*/
+  });
 };

@@ -16,7 +16,7 @@ import Profile from "../Profile";
 const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
   useEffect(() => {
     onMount();
-    onCreateSocket();
+    //onCreateSocket();
   }, []);
 
   useDidMountEffect(() => {

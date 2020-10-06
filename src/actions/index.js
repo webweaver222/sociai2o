@@ -91,10 +91,14 @@ const fetchProfile = service => username => history => async dispatch => {
     }
 
     if (user.avatarUrl) {
-      const size = await getImageSize(user.avatarUrl);
+      const image = await getImageSize(user.avatarUrl);
 
-      if (size) {
-        dispatch({ type: "PREPARE_AVATAR_CONTAINER", payload: size });
+      if (image.errorFetching) {
+        user.avatarUrl = null;
+      }
+
+      if (image) {
+        dispatch({ type: "PREPARE_AVATAR_CONTAINER", payload: image });
       }
     }
 
@@ -301,6 +305,8 @@ const avatarUpload = service => async (dispatch, getState) => {
     );
 
     const { url, size } = await res.json();
+
+    console.log(size);
 
     dispatch({ type: "PREPARE_AVATAR_CONTAINER", payload: size });
 

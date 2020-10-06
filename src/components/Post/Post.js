@@ -1,5 +1,6 @@
 import React from "react";
 import ConnectedPost from "../hoc/connectedPost";
+import qm from "../../resources/img/qm.png";
 import "./Post.sass";
 
 const Post = ({
@@ -17,7 +18,6 @@ const Post = ({
   onPostEditClose,
   onEditPost,
   onEditInputChange,
-  onTogleReplySection,
   history
 }) => {
   const renderReplies = () => {
@@ -108,8 +108,13 @@ const Post = ({
           <div
             className="pic"
             onClick={() => onFriendClick(post.user.username)}
-            style={{ backgroundImage: `url(${post.user.avatarUrl})` }}
-          ></div>
+          >
+            <img
+              src={post.user.avatarUrl}
+              alt="avatar fetch error"
+              onError={e => (e.target.src = qm)}
+            />
+          </div>
         </div>
         <div className="post-body">
           <span onClick={() => onFriendClick(post.user.username)}>
