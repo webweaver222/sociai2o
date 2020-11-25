@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import "./resources/vars.sass";
