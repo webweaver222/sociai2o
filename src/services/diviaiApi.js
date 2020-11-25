@@ -1,7 +1,7 @@
 export default class DiviaiService {
-  _base = "http://localhost:3000";
+  _base = `${location.protocol}//${location.hostname}/diviai`;
 
-  getIndex = async token => {
+  getIndex = async (token) => {
     const myHeaders = new Headers();
 
     myHeaders.append("Accept", "application/json, text/plain, */*");
@@ -10,7 +10,7 @@ export default class DiviaiService {
 
     const res = await fetch(this._base + "/", {
       credentials: "include",
-      headers: myHeaders
+      headers: myHeaders,
     });
     return res;
   };
@@ -25,7 +25,7 @@ export default class DiviaiService {
     const res = await fetch(this._base + url, {
       method: "get",
       credentials: "include",
-      headers: myHeaders
+      headers: myHeaders,
     });
 
     return res;
@@ -45,7 +45,7 @@ export default class DiviaiService {
       method: "post",
       credentials: "include",
       headers: myHeaders,
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     return res;
