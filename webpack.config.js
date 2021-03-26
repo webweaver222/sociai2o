@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
 module.exports = (env = {}) => {
   const { mode = "development" } = env;
 
@@ -9,7 +10,7 @@ module.exports = (env = {}) => {
   const getStyleLoaders = () => {
     return [
       isProd ? MiniCssExtractPlugin.loader : "style-loader",
-      "css-loader"
+      "css-loader",
     ];
   };
 
@@ -17,8 +18,8 @@ module.exports = (env = {}) => {
     const plugins = [
       new HtmlWebpackPlugin({
         title: "SociAi",
-        template: "public/index.html"
-      })
+        template: "public/index.html",
+      }),
     ];
 
     if (isProd)
@@ -32,7 +33,7 @@ module.exports = (env = {}) => {
 
     output: {
       filename: isProd ? "main-[hash:8].js" : undefined,
-      publicPath: "/"
+      publicPath: "/",
     },
 
     module: {
@@ -44,22 +45,22 @@ module.exports = (env = {}) => {
           exclude: /node_modules/,
           use: [
             {
-              loader: "babel-loader"
-            }
-          ]
+              loader: "babel-loader",
+            },
+          ],
         },
         //loading images
         {
-          test: /\.(png|jpg|gif|ico|jpeg)$/,
+          test: /\.(png|jpg|gif|ico|jpeg|svg)$/,
           use: [
             {
               loader: "file-loader",
               options: {
                 outputPath: "images",
-                name: "[name]-[sha1:hash:7].[ext]"
-              }
-            }
-          ]
+                name: "[name]-[sha1:hash:7].[ext]",
+              },
+            },
+          ],
         },
         // loading fonts
         {
@@ -69,15 +70,15 @@ module.exports = (env = {}) => {
               loader: "file-loader",
               options: {
                 outputPath: "fonts",
-                name: "[name].[ext]"
-              }
-            }
-          ]
+                name: "[name].[ext]",
+              },
+            },
+          ],
         },
         //loading css
         {
           test: /\.css$/,
-          use: getStyleLoaders()
+          use: getStyleLoaders(),
         },
         //loading sass
         {
@@ -88,12 +89,16 @@ module.exports = (env = {}) => {
             {
               loader: "sass-resources-loader",
               options: {
-                resources: ["./src/resources/vars.sass"]
-              }
-            }
-          ]
-        }
-      ]
+                resources: ["./src/resources/vars.sass"],
+              },
+            },
+          ],
+        },
+      ],
+    },
+
+    resolve: {
+      modules: [path.resolve(__dirname, "src"), "node_modules"],
     },
 
     plugins: getPlugins(),
@@ -106,7 +111,7 @@ module.exports = (env = {}) => {
       historyApiFallback: true,
       contentBase: "./",
       hot: true,
-      openPage: ""
-    }
+      openPage: "",
+    },
   };
 };

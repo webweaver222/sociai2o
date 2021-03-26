@@ -8,10 +8,10 @@ import { tryLogin } from "../../actions";
 import { socket } from "../../actions/socket";
 
 import "./app.sass";
-import bgc from "../../resources/svg/background.html";
 
 import Login from "../login";
 import Profile from "../Profile";
+import Background from "./background";
 
 const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
   useEffect(() => {
@@ -38,7 +38,7 @@ const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
         <Route path="/profile/:username" component={Profile} />
       </Switch>
       {shading}
-      <div className="background" dangerouslySetInnerHTML={{ __html: bgc }} />
+      <Background />
     </div>
   );
 };
@@ -53,7 +53,7 @@ export default compose(
       return {
         onMount: () => dispatch(tryLogin(service)(history)),
         onCreateSocket: () => dispatch(socket(service)(history)),
-        onBodyClick: () => dispatch("HIDE_DROPDOWN")
+        onBodyClick: () => dispatch("HIDE_DROPDOWN"),
       };
     }
   )
