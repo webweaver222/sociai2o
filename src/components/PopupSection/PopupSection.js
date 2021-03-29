@@ -1,8 +1,8 @@
 import React from "react";
-import { compose } from "../../utils";
-import withService from "../hoc/withService";
+import { compose } from "utils";
+import withService from "components/hoc/withService";
 import { connect } from "react-redux";
-import { avatarUpload } from "../../actions";
+import { avatarUpload } from "actions/profile";
 import "./PopupSection.sass";
 
 const PopupSection = ({ render, ...args }) => {
@@ -13,12 +13,12 @@ const mapStateToProps = ({ photo: { fileEncode, base64, width, height } }) => ({
   fileEncode,
   base64,
   width,
-  height
+  height,
 });
 
 const mapDispatchToProps = (dispatch, { service }) => ({
   onUploadConfirm: () => dispatch(avatarUpload(service)),
-  onUploadCancel: () => dispatch("CLOSE_POPUP")
+  onUploadCancel: () => dispatch("CLOSE_POPUP"),
 });
 
 export default compose(

@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
 
-import pic from "../../resources/img/qm.png";
-import ProgressBar from "../minorComp/LoadingProgress";
-import { avatarEncode } from "../../actions";
+import pic from "resources/img/qm.png";
+import ProgressBar from "components/minorComp/LoadingProgress";
+import { avatarEncode } from "actions/profile";
 import "./Photo.sass";
 
 const Photo = ({ data, user, onAvatarUpl, avatarWidth, avatarHeight }) => {
@@ -15,7 +15,7 @@ const Photo = ({ data, user, onAvatarUpl, avatarWidth, avatarHeight }) => {
     width,
     height,
     onUploadConfirm,
-    onUploadCancel
+    onUploadCancel,
   }) => {
     const img = base64 ? (
       <img src={base64} alt="" width={width} height={height} />
@@ -65,16 +65,16 @@ const Photo = ({ data, user, onAvatarUpl, avatarWidth, avatarHeight }) => {
 const mapStateToProps = ({
   auth: { user },
   profile: { data },
-  photo: { avatarWidth, avatarHeight }
+  photo: { avatarWidth, avatarHeight },
 }) => ({
   data,
   user,
   avatarWidth,
-  avatarHeight
+  avatarHeight,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onAvatarUpl: func => file => dispatch(avatarEncode(func)(file))
+const mapDispatchToProps = (dispatch) => ({
+  onAvatarUpl: (func) => (file) => dispatch(avatarEncode(func)(file)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Photo);

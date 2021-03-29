@@ -15,7 +15,7 @@ import App from "./components/app";
 import diviaiService from "./services/diviaiApi";
 import store from "./store";
 
-const service = new diviaiService();
+const service = new diviaiService("http://localhost:3000");
 
 ReactDom.render(
   <Provider store={store}>

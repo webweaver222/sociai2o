@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { compose } from "../../utils";
+import { compose } from "utils";
 
 import { withRouter } from "react-router-dom";
-import withService from "../hoc/withService";
-import useDidMountEffect from "../customHooks/didMountEffect";
-import { fetchProfile } from "../../actions";
+import withService from "components/hoc/withService";
+import useDidMountEffect from "components/customHooks/didMountEffect";
+import { fetchProfile } from "actions/profile";
 
 import Photo from "../Photo";
 import Controls from "../Controls";
@@ -50,18 +50,18 @@ const Profile = ({ user, fetching, onMount, match, popupRender }) => {
 
 const mapStateToProps = ({
   auth: { user },
-  profile: { fetching, popupRender }
+  profile: { fetching, popupRender },
 }) => ({
   user,
   fetching,
-  popupRender
+  popupRender,
 });
 
 const mapDispatchToProps = (
   dispatch,
   { service, history, match: { params } }
 ) => ({
-  onMount: () => dispatch(fetchProfile(service)(params.username)(history))
+  onMount: () => dispatch(fetchProfile(service)(params.username)(history)),
 });
 
 export default compose(

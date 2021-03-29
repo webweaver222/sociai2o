@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose } from "../../utils";
+import { compose } from "utils";
 import withService from "../hoc/withService";
 import { withRouter } from "react-router-dom";
-import { signup, auth } from "../../actions";
+import { signup, auth } from "actions/auth";
 //import withService from "../hoc/withService";
 
 import "./login.sass";
@@ -19,7 +19,7 @@ const LoginContainer = ({
   changeMail,
   onSignUp,
   onChangeAuthType,
-  signup
+  signup,
 }) => (
   <Login
     render={(fetching, error, valid_errors) => {
@@ -29,7 +29,7 @@ const LoginContainer = ({
         <button onClick={onLogIn}>{fetching ? fetching : "Log In"}</button>
       );
 
-      const onChangeType = e => {
+      const onChangeType = (e) => {
         e.preventDefault();
         onChangeAuthType();
       };
@@ -60,7 +60,7 @@ const LoginContainer = ({
             }
             id="login"
             value={login || ""}
-            onChange={e => changeLog(e.target.value)}
+            onChange={(e) => changeLog(e.target.value)}
           />
         </div>
       ) : null;
@@ -79,7 +79,7 @@ const LoginContainer = ({
               }
               id="mail"
               value={email || ""}
-              onChange={e => changeMail(e.target.value)}
+              onChange={(e) => changeMail(e.target.value)}
             />
           </div>
           {log}
@@ -93,7 +93,7 @@ const LoginContainer = ({
               }
               id="pass"
               value={password || ""}
-              onChange={e => changePass(e.target.value)}
+              onChange={(e) => changePass(e.target.value)}
             />
           </div>
           {btn}
@@ -108,17 +108,20 @@ const mapStateToProps = ({ auth: { login, password, signup, email } }) => ({
   login,
   password,
   email,
-  signup
+  signup,
 });
 
 const mapDispatchToProps = (dispatch, { service, history }) => {
   return {
-    changeLog: text => dispatch({ type: "CHANGE_LOGIN_INPUT", payload: text }),
-    changePass: pass => dispatch({ type: "CHANGE_PASS_INPUT", payload: pass }),
-    changeMail: text => dispatch({ type: "CHANGE_EMAIL_INPUT", payload: text }),
+    changeLog: (text) =>
+      dispatch({ type: "CHANGE_LOGIN_INPUT", payload: text }),
+    changePass: (pass) =>
+      dispatch({ type: "CHANGE_PASS_INPUT", payload: pass }),
+    changeMail: (text) =>
+      dispatch({ type: "CHANGE_EMAIL_INPUT", payload: text }),
     onLogIn: () => dispatch(auth(service)(history)),
     onSignUp: () => dispatch(signup(service)(history)),
-    onChangeAuthType: () => dispatch("CHANGE_AUTH_TYPE")
+    onChangeAuthType: () => dispatch("CHANGE_AUTH_TYPE"),
   };
 };
 

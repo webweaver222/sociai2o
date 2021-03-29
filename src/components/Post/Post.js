@@ -1,5 +1,5 @@
 import React from "react";
-import ConnectedPost from "../hoc/connectedPost";
+import ConnectedPost from "./connectedPost";
 import qm from "../../resources/img/qm.png";
 import "./Post.sass";
 
@@ -18,11 +18,11 @@ const Post = ({
   onPostEditClose,
   onEditPost,
   onEditInputChange,
-  history
+  history,
 }) => {
   const renderReplies = () => {
     {
-      return post.rep.map(r => {
+      return post.rep.map((r) => {
         return (
           <li key={r._id}>
             <ConnectedPost post={r} />
@@ -45,7 +45,7 @@ const Post = ({
         <input
           type="text"
           defaultValue={post.body}
-          onChange={e => onEditInputChange(e.target.value)}
+          onChange={(e) => onEditInputChange(e.target.value)}
         />
       </div>
     ) : (
@@ -57,7 +57,7 @@ const Post = ({
       <ul className="replySection">{renderReplies()}</ul>
     ) : null;
 
-  const onFriendClick = username => {
+  const onFriendClick = (username) => {
     history.push(`/profile/${username}`);
   };
 
@@ -96,7 +96,7 @@ const Post = ({
         <input
           type="text"
           value={replyInput}
-          onChange={e => onChangeReplyInput(e.target.value)}
+          onChange={(e) => onChangeReplyInput(e.target.value)}
         />
       </div>
     ) : null;
@@ -112,7 +112,7 @@ const Post = ({
             <img
               src={post.user.avatarUrl}
               alt="avatar fetch error"
-              onError={e => (e.target.src = qm)}
+              onError={(e) => (e.target.src = qm)}
             />
           </div>
         </div>

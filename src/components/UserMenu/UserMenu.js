@@ -1,16 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { compose } from "../../utils";
+import { compose } from "utils";
 import "./UserMenu.sass";
 
 import withService from "../hoc/withService";
 import { withRouter } from "react-router-dom";
-import { logout } from "../../actions";
+import { logout } from "actions/auth";
 
 const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
-  const pic = user.avatarUrl
-    ? user.avatarUrl
-    : "../../src/resources/img/qm.png";
+  const pic = user.avatarUrl ? user.avatarUrl : "/src/resources/img/qm.png";
 
   const ddStyle = !dropdown ? { display: "none" } : { display: "block" };
 
@@ -18,7 +16,7 @@ const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
     <div
       className="user-menu"
       style={{ backgroundImage: `url(${pic})` }}
-      onClick={e => {
+      onClick={(e) => {
         e.stopPropagation();
         onIconClick();
       }}
@@ -40,13 +38,13 @@ const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
 
 const mapStateToProps = ({ auth: { user }, profile: { dropdown } }) => ({
   user,
-  dropdown
+  dropdown,
 });
 
 const mapDispatchToProps = (dispatch, { service, history }) => ({
   onIconClick: () => dispatch("SHOW_DROPDOWN"),
   onLogout: () => dispatch(logout(service)),
-  onHomePage: username => history.push(`/profile/${username}`)
+  onHomePage: (username) => history.push(`/profile/${username}`),
 });
 
 export default compose(

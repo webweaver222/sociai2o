@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { compose } from "../../utils";
+import { compose } from "utils";
 import withService from "../hoc/withService";
 import { Route, Switch, withRouter } from "react-router-dom";
 import useDidMountEffect from "../customHooks/didMountEffect";
-import { tryLogin } from "../../actions";
-import { socket } from "../../actions/socket";
+import { tryLogin } from "actions/auth";
+import { socket } from "actions/socket";
 
 import "./app.sass";
 

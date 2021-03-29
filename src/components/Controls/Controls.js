@@ -1,9 +1,9 @@
 import React from "react";
-import { compose } from "../../utils";
+import { compose } from "utils";
 import { connect } from "react-redux";
 
-import withService from "../hoc/withService";
-import { addFriend, removeFriend, acceptFriend } from "../../actions";
+import withService from "components/hoc/withService";
+import { addFriend, removeFriend, acceptFriend } from "actions/friends";
 import "./Controls.sass";
 
 const Controls = ({
@@ -12,7 +12,7 @@ const Controls = ({
   user,
   onRemoveFriend,
   onAddFriend,
-  onAcceptFriend
+  onAcceptFriend,
 }) => {
   let span;
   let pannel;
@@ -54,13 +54,13 @@ const Controls = ({
 const mapStateToProps = ({ profile: { relations, data }, auth: { user } }) => ({
   relations,
   data,
-  user
+  user,
 });
 
 const mapDispatchToProps = (dispatch, { service }) => ({
-  onAcceptFriend: id => dispatch(acceptFriend(service)(id)),
-  onRemoveFriend: id => dispatch(removeFriend(service)(id)),
-  onAddFriend: id => dispatch(addFriend(service)(id))
+  onAcceptFriend: (id) => dispatch(acceptFriend(service)(id)),
+  onRemoveFriend: (id) => dispatch(removeFriend(service)(id)),
+  onAddFriend: (id) => dispatch(addFriend(service)(id)),
 });
 
 export default compose(

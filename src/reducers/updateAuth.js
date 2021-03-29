@@ -1,13 +1,13 @@
 const initialUpdate = {
   user: null,
   signup: false,
-  email: "",
+  email: "test@test.com",
   login: "",
-  password: "",
+  password: "123",
   component_fetching: false,
   login_fetching: false,
   auth_error: null,
-  valid_errors: {}
+  valid_errors: {},
 };
 
 const updateAuth = (state, action) => {
@@ -17,7 +17,7 @@ const updateAuth = (state, action) => {
 
   const {
     auth,
-    auth: { signup }
+    auth: { signup },
   } = state;
 
   switch (action.type) {
@@ -26,43 +26,45 @@ const updateAuth = (state, action) => {
         ...auth,
         user: {
           ...auth.user,
-          avatarUrl: action.payload
-        }
+          avatarUrl: action.payload,
+        },
       };
     }
 
     case "CHANGE_EMAIL_INPUT": {
       return {
         ...auth,
-        email: action.payload
+        email: action.payload,
       };
     }
 
     case "CHANGE_LOGIN_INPUT": {
       return {
         ...auth,
-        login: action.payload
+        login: action.payload,
       };
     }
 
     case "CHANGE_PASS_INPUT": {
       return {
         ...auth,
-        password: action.payload
+        password: action.payload,
       };
     }
 
     case "CHANGE_AUTH_TYPE": {
       return {
         ...auth,
-        signup: !signup
+        signup: !signup,
+        email: signup ? initialUpdate.email : "",
+        password: signup ? initialUpdate.password : "",
       };
     }
 
     case "AUTH_START": {
       return {
         ...auth,
-        login_fetching: true
+        login_fetching: true,
       };
     }
 
@@ -70,7 +72,7 @@ const updateAuth = (state, action) => {
       return {
         ...auth,
         user: action.payload,
-        login_fetching: false
+        login_fetching: false,
       };
     }
 
@@ -78,21 +80,21 @@ const updateAuth = (state, action) => {
       return {
         ...auth,
         auth_error: action.payload,
-        login_fetching: false
+        login_fetching: false,
       };
     }
 
     case "LOGOUT": {
       return {
         ...auth,
-        user: null
+        user: null,
       };
     }
 
     case "LOAD_USER": {
       return {
         ...auth,
-        user: action.payload
+        user: action.payload,
       };
     }
 

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import "./timeline.sass";
 
 import PostInput from "../PostInput";
-import ConnectedPost from "../hoc/connectedPost";
+import ConnectedPost from "components/Post/connectedPost";
 
 const Timeline = ({ posts, user, data }) => {
   const listRef = useRef(null);
@@ -24,7 +24,7 @@ const Timeline = ({ posts, user, data }) => {
 
       <ul
         className="posts-list section-block"
-        onWheel={e => (listRef.current.scrollTop += e.deltaY * 0.3)}
+        onWheel={(e) => (listRef.current.scrollTop += e.deltaY * 0.3)}
         ref={listRef}
       >
         {renderList()}
@@ -36,14 +36,14 @@ const Timeline = ({ posts, user, data }) => {
 const mapStateToProps = ({
   profile: { data },
   timeline: { posts },
-  auth: { user }
+  auth: { user },
 }) => ({
   posts,
   data,
-  user
+  user,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   // fnBlaBla: () => dispatch(action.name()),
 });
 

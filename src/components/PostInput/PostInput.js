@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { compose } from "../../utils";
-import { postMessage } from "../../actions";
+import { compose } from "utils";
+import { postMessage } from "actions/posts";
 
 //import { withRouter } from "react-router-dom";
 import withService from "../hoc/withService";
@@ -14,7 +14,7 @@ const PostInput = ({ postInput, changePostInput, postMessage }) => {
         type="text"
         placeholder="What's up?"
         value={postInput}
-        onChange={e => {
+        onChange={(e) => {
           changePostInput(e.target.value);
         }}
       />
@@ -34,13 +34,13 @@ PostInput.defaultProps = {
 };
 
 const mapStateToProps = ({ timeline: { postInput } }) => ({
-  postInput
+  postInput,
 });
 
 const mapDispatchToProps = (dispatch, { service }) => ({
-  changePostInput: text =>
+  changePostInput: (text) =>
     dispatch({ type: "CHANGE_POST_INPUT", payload: text }),
-  postMessage: () => dispatch(postMessage(service))
+  postMessage: () => dispatch(postMessage(service)),
 });
 
 export default compose(
