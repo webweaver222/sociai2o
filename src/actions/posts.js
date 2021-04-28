@@ -3,13 +3,21 @@ const postMessage = (service) => async (dispatch, getState) => {
 
   const {
     timeline: { postInput: post },
+    auth,
   } = getState();
 
   try {
     const res = await service.postResource({ post }, "/post", token);
 
     if (res.ok) {
-      return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+      const data = await res.json();
+      return dispatch({
+        type: "POST_SUCCESS",
+        payload: {
+          post: data,
+          user: auth.user,
+        },
+      });
     }
   } catch (e) {}
 };
@@ -19,6 +27,7 @@ const postReply = (service) => (parent_id) => async (dispatch, getState) => {
 
   const {
     timeline: { replyInput: post },
+    auth,
   } = getState();
 
   try {
@@ -29,7 +38,15 @@ const postReply = (service) => (parent_id) => async (dispatch, getState) => {
     );
 
     if (res.ok) {
-      return dispatch({ type: "POST_SUCCESS", payload: await res.json() });
+      const data = await res.json();
+      console.log(data);
+      return dispatch({
+        type: "POST_SUCCESS",
+        payload: {
+          post: data,
+          user: auth.user,
+        },
+      });
     }
   } catch (e) {
     console.log(e);

@@ -2,7 +2,7 @@ import React from "react";
 import { compose } from "utils";
 import { connect } from "react-redux";
 
-import withService from "components/hoc/withService";
+import { withService } from "components/hoc/withService";
 import { addFriend, removeFriend, acceptFriend } from "actions/friends";
 import "./Controls.sass";
 

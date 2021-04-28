@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "utils";
-import withService from "../hoc/withService";
+import { withService } from "../hoc/withService";
 import { withRouter } from "react-router-dom";
 import { signup, auth } from "actions/auth";
-//import withService from "../hoc/withService";
 
 import "./login.sass";
 import Login from "./login";

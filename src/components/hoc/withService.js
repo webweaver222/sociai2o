@@ -2,16 +2,28 @@ import React from "react";
 
 import { ServiceConsumer } from "../service-provider";
 
-const witheService = Wrapped => {
-  return props => {
+const withService = (Wrapped) => {
+  return (props) => {
     return (
       <ServiceConsumer>
-        {service => {
-          return <Wrapped {...props} service={service} />;
+        {({ api }) => {
+          return <Wrapped {...props} service={api} />;
         }}
       </ServiceConsumer>
     );
   };
 };
 
-export default witheService;
+const withSocket = (Wrapped) => {
+  return (props) => {
+    return (
+      <ServiceConsumer>
+        {({ socket }) => {
+          return <Wrapped {...props} socket={socket} />;
+        }}
+      </ServiceConsumer>
+    );
+  };
+};
+
+export { withService, withSocket };

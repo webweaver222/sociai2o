@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import { compose } from "utils";
 import { postMessage } from "actions/posts";
 
-//import { withRouter } from "react-router-dom";
-import withService from "../hoc/withService";
+import { withService } from "../hoc/withService";
 
 const PostInput = ({ postInput, changePostInput, postMessage }) => {
   return (

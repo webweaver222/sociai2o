@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "utils";
-import withService from "components/hoc/withService";
+import { withService } from "components/hoc/withService";
 import { connect } from "react-redux";
 import { avatarUpload } from "actions/profile";
 import "./PopupSection.sass";

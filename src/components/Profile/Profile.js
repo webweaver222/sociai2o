@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 import { compose } from "utils";
 
 import { withRouter } from "react-router-dom";
-import withService from "components/hoc/withService";
+import { withService, withSocket } from "components/hoc/withService";
 import useDidMountEffect from "components/customHooks/didMountEffect";
 import { fetchProfile } from "actions/profile";
+import { createSocket } from "actions/socket";
 
 import Photo from "../Photo";
 import Controls from "../Controls";
@@ -17,14 +18,25 @@ import PopupSection from "../PopupSection";
 
 import "./Profile.sass";
 
-const Profile = ({ user, fetching, onMount, match, popupRender }) => {
-  useEffect(() => {
-    onMount();
-  }, []);
+const Profile = ({
+  user,
+  fetching,
+  onMount,
+  match,
+  popupRender,
+  onCreateSocket,
+}) => {
+  const checkAuth = (hook) => (cb) => (deps) => {
+    if (!user) return;
+    hook(cb, deps);
+  };
 
-  useDidMountEffect(() => {
+  checkAuth(useEffect)(() => {
     onMount();
-  }, [match.params.username]);
+    onCreateSocket();
+  })([]);
+
+  checkAuth(useDidMountEffect)(() => onMount())([match.params.username, user]);
 
   const popup = popupRender ? <PopupSection render={popupRender} /> : null;
 
@@ -59,13 +71,15 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (
   dispatch,
-  { service, history, match: { params } }
+  { service, socket, history, match: { params } }
 ) => ({
   onMount: () => dispatch(fetchProfile(service)(params.username)(history)),
+  onCreateSocket: () => dispatch(createSocket(socket)(history)),
 });
 
 export default compose(
   withService,
+  withSocket,
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
 )(Profile);

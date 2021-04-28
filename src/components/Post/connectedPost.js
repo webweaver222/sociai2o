@@ -4,7 +4,7 @@ import { compose } from "utils";
 import { deletePost, postReply, editPost } from "actions/posts";
 import Post from "components/Post";
 
-import withService from "components/hoc/withService";
+import { withService } from "components/hoc/withService";
 import { withRouter } from "react-router-dom";
 
 const mapStateToProps = ({

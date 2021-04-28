@@ -6,7 +6,6 @@ const fetchProfile = (service) => (username) => (history) => async (
   const token = JSON.parse(localStorage.getItem("sociaiUser")).token;
   try {
     const res = await service.getResource(`/profile/${username}`, token);
-
     const {
       user,
       friendsList,
@@ -45,7 +44,7 @@ const fetchProfile = (service) => (username) => (history) => async (
       },
     });
   } catch (e) {
-    console.log(e);
+    console.log(e, "fetch ERROR");
   }
 };
 

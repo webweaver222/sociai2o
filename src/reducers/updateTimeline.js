@@ -6,7 +6,7 @@ const initialTimeline = {
   replyInput: "",
   editInput: "",
   reply: null,
-  postEdit: null
+  postEdit: null,
 };
 
 const updateTimeline = (state, action) => {
@@ -15,18 +15,17 @@ const updateTimeline = (state, action) => {
   const {
     timeline,
     timeline: { posts },
-    auth
   } = state;
 
   switch (action.type) {
     case "EDIT_SUCCESS": {
       if (action.payload.parent) {
         const parentIdx = posts.findIndex(
-          post => post._id === action.payload.parent
+          (post) => post._id === action.payload.parent
         );
 
         const editIdx = posts[parentIdx].rep.findIndex(
-          post => post._id === action.payload._id
+          (post) => post._id === action.payload._id
         );
 
         return {
@@ -41,17 +40,17 @@ const updateTimeline = (state, action) => {
                 posts[parentIdx].rep,
                 {
                   ...posts[parentIdx].rep[editIdx],
-                  body: action.payload.body
+                  body: action.payload.body,
                 },
                 editIdx
-              )
+              ),
             },
             parentIdx
-          )
+          ),
         };
       }
 
-      const idx = posts.findIndex(post => post._id === action.payload._id);
+      const idx = posts.findIndex((post) => post._id === action.payload._id);
 
       return {
         ...timeline,
@@ -61,21 +60,21 @@ const updateTimeline = (state, action) => {
           posts,
           {
             ...posts[idx],
-            body: action.payload.body
+            body: action.payload.body,
           },
           idx
-        )
+        ),
       };
     }
 
     case "POST_DELETE_SUCCESS": {
       if (action.payload.parent) {
         const parentIdx = posts.findIndex(
-          post => post._id === action.payload.parent
+          (post) => post._id === action.payload.parent
         );
 
         const deleteIdx = posts[parentIdx].rep.findIndex(
-          post => post._id === action.payload._id
+          (post) => post._id === action.payload._id
         );
 
         return {
@@ -84,32 +83,33 @@ const updateTimeline = (state, action) => {
             posts,
             {
               ...posts[parentIdx],
-              rep: updatePosts(posts[parentIdx].rep, "remove", deleteIdx)
+              rep: updatePosts(posts[parentIdx].rep, "remove", deleteIdx),
             },
             parentIdx
-          )
+          ),
         };
       }
 
-      const idx = posts.findIndex(post => post._id === action.payload._id);
+      const idx = posts.findIndex((post) => post._id === action.payload._id);
+      console.log(idx);
 
       return {
         ...timeline,
-        posts: updatePosts(posts, "remove", idx)
+        posts: updatePosts(posts, "remove", idx),
       };
     }
 
     case "OPEN_EDIT": {
       return {
         ...timeline,
-        postEdit: action.payload
+        postEdit: action.payload,
       };
     }
 
     case "CLOSE_EDIT": {
       return {
         ...timeline,
-        postEdit: null
+        postEdit: null,
       };
     }
 
@@ -117,7 +117,7 @@ const updateTimeline = (state, action) => {
       return {
         ...timeline,
         reply: action.payload,
-        replyInput: ""
+        replyInput: "",
       };
     }
 
@@ -125,39 +125,39 @@ const updateTimeline = (state, action) => {
       return {
         ...timeline,
         reply: null,
-        replyInput: ""
+        replyInput: "",
       };
     }
 
     case "CHANGE_REPLY_INPUT": {
       return {
         ...timeline,
-        replyInput: action.payload
+        replyInput: action.payload,
       };
     }
 
     case "CHANGE_EDIT_INPUT": {
       return {
         ...timeline,
-        editInput: action.payload
+        editInput: action.payload,
       };
     }
 
     case "CHANGE_POST_INPUT": {
       return {
         ...timeline,
-        postInput: action.payload
+        postInput: action.payload,
       };
     }
     case "POST_SUCCESS": {
       const newPost = {
-        ...action.payload,
-        user: auth.user
+        ...action.payload.post,
+        user: action.payload.user,
       };
 
-      if (action.payload.parent) {
+      if (action.payload.post.parent) {
         const parent_idx = posts.findIndex(
-          post => post._id === action.payload.parent._id
+          (post) => post._id === action.payload.post.parent._id
         );
 
         return {
@@ -168,24 +168,24 @@ const updateTimeline = (state, action) => {
             posts,
             {
               ...posts[parent_idx],
-              rep: updatePosts(posts[parent_idx].rep, newPost)
+              rep: updatePosts(posts[parent_idx].rep, newPost),
             },
             parent_idx
-          )
+          ),
         };
       }
 
       return {
         ...timeline,
         postInput: "",
-        posts: updatePosts(posts, newPost)
+        posts: updatePosts(posts, newPost),
       };
     }
 
     case "PROFILE_FETCH_SUCCESS": {
       return {
         ...timeline,
-        posts: action.payload.posts
+        posts: action.payload.posts,
       };
     }
 

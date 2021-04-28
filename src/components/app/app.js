@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "utils";
-import withService from "../hoc/withService";
+import { withService, withSocket } from "../hoc/withService";
 import { Route, Switch, withRouter } from "react-router-dom";
 import useDidMountEffect from "../customHooks/didMountEffect";
 import { tryLogin } from "actions/auth";
-import { socket } from "actions/socket";
 
 import "./app.sass";
 
@@ -13,10 +12,9 @@ import Login from "../login";
 import Profile from "../Profile";
 import Background from "./background";
 
-const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
+const App = ({ onMount, user, history, onBodyClick, shd }) => {
   useEffect(() => {
     onMount();
-    //onCreateSocket();
   }, []);
 
   useDidMountEffect(() => {
@@ -46,13 +44,13 @@ const App = ({ onMount, onCreateSocket, user, history, onBodyClick, shd }) => {
 export default compose(
   withRouter,
   withService,
+  withSocket,
   connect(
     ({ auth: { user }, profile: { shading } }) => ({ user, shd: shading }),
 
     (dispatch, { service, history }) => {
       return {
         onMount: () => dispatch(tryLogin(service)(history)),
-        onCreateSocket: () => dispatch(socket(service)(history)),
         onBodyClick: () => dispatch("HIDE_DROPDOWN"),
       };
     }

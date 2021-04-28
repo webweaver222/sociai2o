@@ -39,7 +39,6 @@ const auth = (service) => (history) => async (dispatch, getState) => {
   }
 };
 
-/*need update and refactor*/
 const signup = (service) => (history) => async (dispatch, getState) => {
   const {
     auth: { email, login, password },

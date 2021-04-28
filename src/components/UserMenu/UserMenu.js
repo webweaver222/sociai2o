@@ -3,11 +3,19 @@ import { connect } from "react-redux";
 import { compose } from "utils";
 import "./UserMenu.sass";
 
-import withService from "../hoc/withService";
+import { withService, withSocket } from "../hoc/withService";
 import { withRouter } from "react-router-dom";
 import { logout } from "actions/auth";
+import { closeConn } from "actions/socket";
 
-const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
+const UserMenu = ({
+  user,
+  dropdown,
+  onIconClick,
+  onLogout,
+  onHomePage,
+  closeSocket,
+}) => {
   const pic = user.avatarUrl ? user.avatarUrl : "/src/resources/img/qm.png";
 
   const ddStyle = !dropdown ? { display: "none" } : { display: "block" };
@@ -29,7 +37,14 @@ const UserMenu = ({ user, dropdown, onIconClick, onLogout, onHomePage }) => {
         <ul>
           <li onClick={() => onHomePage(user.username)}>My page</li>
           <li>Profile Settings</li>
-          <li onClick={onLogout}>Logout</li>
+          <li
+            onClick={() => {
+              onLogout();
+              closeSocket();
+            }}
+          >
+            Logout
+          </li>
         </ul>
       </div>
     </div>
@@ -41,14 +56,16 @@ const mapStateToProps = ({ auth: { user }, profile: { dropdown } }) => ({
   dropdown,
 });
 
-const mapDispatchToProps = (dispatch, { service, history }) => ({
+const mapDispatchToProps = (dispatch, { service, socket, history }) => ({
   onIconClick: () => dispatch("SHOW_DROPDOWN"),
   onLogout: () => dispatch(logout(service)),
+  closeSocket: () => dispatch(closeConn(socket)(history)),
   onHomePage: (username) => history.push(`/profile/${username}`),
 });
 
 export default compose(
   withRouter,
   withService,
+  withSocket,
   connect(mapStateToProps, mapDispatchToProps)
 )(UserMenu);
