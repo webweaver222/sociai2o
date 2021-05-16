@@ -23,7 +23,7 @@ const container = {
 };
 
 const history = createBrowserHistory({
-  basename: "/",
+  basename: "sociai",
 });
 
 ReactDom.render(
