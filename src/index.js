@@ -17,8 +17,8 @@ import SocketWrapper from "./services/ws";
 import store from "./store";
 
 const container = {
-  api: new diviaiService("http://localhost:3000"),
-  socket: new SocketWrapper("ws://localhost:3000/"),
+  api: new diviaiService(`${location.protocol}//${location.hostname}/diviai`),
+  socket: new SocketWrapper(`ws://${location.hostname}/diviai/`),
 };
 
 const history = createBrowserHistory({
