@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 
 import "./resources/vars.sass";
@@ -17,12 +17,12 @@ import SocketWrapper from "./services/ws";
 import store from "./store";
 
 const container = {
-  api: new diviaiService(`${location.protocol}//${location.hostname}/diviai`),
-  socket: new SocketWrapper(`ws://${location.hostname}/diviai/`),
+  api: new diviaiService("http://localhost:3000"),
+  socket: new SocketWrapper("ws://localhost:3000/"),
 };
 
 const history = createBrowserHistory({
-  basename: "sociai",
+  basename: "/",
 });
 
 ReactDom.render(
@@ -37,3 +37,4 @@ ReactDom.render(
   </Provider>,
   document.getElementById("root")
 );
+import "./resources/media.sass";

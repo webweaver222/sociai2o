@@ -1,0 +1,80 @@
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px)
+    /**/
+
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px)
+    /**/
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px)
+    /**/
+
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px)
+    html,body
+        overflow: initial
+        height: initial
+        #root
+            .app
+                min-height: 100vh
+                .login
+                    width: 90%
+                    .login-body
+                        width: 100%
+                        padding: 10px
+                        h2
+                            font-family: oxygen
+                            font-size: 20px
+                .profile
+                    flex-direction: column
+                    padding: 0 10px
+                    overflow-x: hidden
+                    .left
+                        width: 100%
+                        .photo
+                            margin: 55px 0 0 0
+                            width: initial
+                            h2
+                                margin-top: 3px
+                            img
+                                max-width: 300px
+                                max-height: 300px
+                    .right
+                        width: 100%
+                        padding: 0
+                        flex-direction: column-reverse
+                        margin-top: 15px
+                        .friends2
+                            align-self: initial
+                            width: 100%
+                            .list-wrapper
+                                .back,.forward
+                                    display: none
+                                .list
+                                    padding-left: 5px
+                                    padding-right: 5px
+                                    .list-flex-container
+                                        display: block
+                                        white-space: nowrap
+                                        overflow-x: scroll
+                                        .pic
+                                            display: inline-block
+                                            height: 80px
+                                            width: 80px
+                                            img
+                                                object-fit: auto
+                        .timeline
+                            width: initial
+                .background
+
+
+    
+
+    
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px)
+    /**/
