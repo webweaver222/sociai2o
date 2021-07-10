@@ -7,7 +7,6 @@ import { createBrowserHistory } from "history";
 import "./resources/vars.sass";
 import "./resources/reset.sass";
 import "./resources/main.sass";
-import "./resources/media.sass";
 
 import ErrorBoundry from "./components/error-boundry";
 import { ServiceProvider } from "./components/service-provider";
@@ -38,3 +37,4 @@ ReactDom.render(
   </Provider>,
   document.getElementById("root")
 );
+import "./resources/media.sass";

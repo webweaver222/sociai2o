@@ -104,8 +104,8 @@ module.exports = (env = {}) => {
     plugins: getPlugins(),
 
     devServer: {
-      //host: '0.0.0.0',
-      //disableHostCheck: true,
+      host: "0.0.0.0",
+      disableHostCheck: true,
       open: true,
       port: 8000,
       historyApiFallback: true,
